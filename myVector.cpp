@@ -60,10 +60,37 @@ public:
     }  
 
 
-    // Move assignment
-    MyVector& operator=(MyVector&& other){
+    // Move assignment for a = b
+    MyVector& operator=(MyVector&& other) noexcept {
+        if (this == &other) return *this;
 
-        
+        delete[] data;
+        size = other.size;
+        capacity = other.capacity;
+        data = other.data;
+
+        other.size = 0;
+        other.capacity = 0;
+        other.data = nullptr;
+
+        return *this;
+    }
+
+    //initalizer list
+    MyVector(initializer_list<int> input){
+        size = input.size();
+        capacity = input.size();
+        data = new int(size);
+        int index{};
+        for (auto x : input){
+            data[index++] = x;
+        }
+    }
+
+    //initalizer list assignment
+    MyVector& operator=(initializer_list<int> input){
+        //tbd...
+        return *this;
     }
 
 
