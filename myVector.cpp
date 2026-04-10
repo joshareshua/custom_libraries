@@ -93,11 +93,11 @@ public:
         return *this;
     }
 
+    void print(){
+        for (size_t i{}; i < size; ++i){
+            cout << data[i] << '\t';
+        }
+    }
+
 
 };
-
-int main(){
-
-
-
-}
