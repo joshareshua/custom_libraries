@@ -89,7 +89,16 @@ public:
 
     //initalizer list assignment
     MyVector& operator=(initializer_list<int> input){
-        //tbd...
+        this->size = input.size();
+        this->capacity = input.size();
+        data = new int[capacity];
+        
+        int index{};
+        for (auto &in: input){
+            data[index] = in;
+            ++index;
+        }
+        
         return *this;
     }
 
@@ -97,6 +106,7 @@ public:
         for (size_t i{}; i < size; ++i){
             cout << data[i] << '\t';
         }
+        cout << '\n';
     }
 
 
