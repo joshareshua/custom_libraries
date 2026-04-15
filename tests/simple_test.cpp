@@ -3,21 +3,33 @@
 
 using namespace std;
 
-bool simple_copy(){
+void test_copy(){
     MyVector a = {1,2,3,4,5};
     MyVector b = a;
-    size_t sizeA = a.getSize();
-    int* dataA = a.getData(), *dataB = b.getData();
-    for (size_t i{}; i < sizeA; ++i){
-        if (dataA[i] != dataB[i]) return false;
+    
+    //test size
+    assert(a.getSize() == b.getSize());
+
+    //test capacity
+    assert(a.getCapacty() == b.getCapacty());
+
+    //test same values
+    for (size_t i{}; i < a.getSize(); ++i){
+        assert(a.getData()[i] == b.getData()[i]);
     }
-    return true;
+
+    //test deep copy
+    assert(a.getData() != b.getData());
+
+    //test mutation
+    a.getData()[0] = 99;
+    assert(a.getData()[0] != b.getData()[0]);
 
 }
 
 int main(){
-    if (simple_copy()) cout << "Simple copy test passed!\n";
-    else if (!simple_copy()) cout << "Simple copy test failed\n";
+    test_copy();
+    cout << "All tests have passed\n";
 
     return 0;
 }
