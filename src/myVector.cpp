@@ -1,32 +1,28 @@
 #include "bits/stdc++.h"
+#include "../include/MyVector.h"
 
 using namespace std;
 
 
-class MyVector{
-    int* data;
-    size_t size;
-    size_t capacity;
 
-public:
-    ~MyVector(){
+    MyVector::~MyVector(){
         delete[] data;
     }
 
-    size_t getSize(){
+    size_t MyVector::getSize(){
         return size;
     }
 
-    int* getData(){
+    int* MyVector::getData(){
         return data;
     }
 
-    size_t getCapacty(){
+    size_t MyVector::getCapacty(){
         return capacity;
     }
     
     // Copy constructor for MyVector a = b where a = *this and b = other;
-    MyVector(MyVector& other){
+    MyVector::MyVector(MyVector& other){
         capacity = other.capacity;
         size = other.size;
         data = new int[capacity];
@@ -36,7 +32,7 @@ public:
     }
 
     // Copy assignment or a = b where a = *this and b = other;
-    MyVector& operator=(MyVector& other){
+    MyVector& MyVector::operator=(MyVector& other){
         if (this == &other) return *this;
 
         if (other.capacity <= capacity){
@@ -61,7 +57,7 @@ public:
     }
 
     // Move constructor 
-    MyVector(MyVector&& other) noexcept
+    Myvector::MyVector(MyVector&& other) noexcept
         : data(other.data),
         capacity(other.capacity),
         size(other.size)
@@ -73,7 +69,7 @@ public:
 
 
     // Move assignment for a = b
-    MyVector& operator=(MyVector&& other) noexcept {
+    MyVector& MyVector::operator=(MyVector&& other) noexcept {
         if (this == &other) return *this;
 
         delete[] data;
@@ -89,7 +85,7 @@ public:
     }
 
     //initalizer list
-    MyVector(initializer_list<int> input){
+    MyVector::MyVector(initializer_list<int> input){
         size = input.size();
         capacity = input.size();
         data = new int(size);
@@ -100,7 +96,7 @@ public:
     }
 
     //initalizer list assignment
-    MyVector& operator=(initializer_list<int> input){
+    MyVector& MyVector::operator=(initializer_list<int> input){
         this->size = input.size();
         this->capacity = input.size();
         data = new int[capacity];
@@ -114,12 +110,10 @@ public:
         return *this;
     }
 
-    void print(){
+    void MyVector::print(){
         for (size_t i{}; i < size; ++i){
             cout << data[i] << '\t';
         }
         cout << '\n';
     }
 
-
-};
