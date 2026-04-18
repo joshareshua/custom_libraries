@@ -1,4 +1,4 @@
-#include "bits/stdc++.h"
+#include "../bits/stdc++.h"
 #include "../include/MyVector.h"
 
 using namespace std;
@@ -22,7 +22,7 @@ using namespace std;
     }
     
     // Copy constructor for MyVector a = b where a = *this and b = other;
-    MyVector::MyVector(MyVector& other){
+    MyVector::MyVector(const MyVector& other){
         capacity = other.capacity;
         size = other.size;
         data = new int[capacity];
@@ -32,7 +32,7 @@ using namespace std;
     }
 
     // Copy assignment or a = b where a = *this and b = other;
-    MyVector& MyVector::operator=(MyVector& other){
+    MyVector& MyVector::operator=(const MyVector& other){
         if (this == &other) return *this;
 
         if (other.capacity <= capacity){
@@ -57,7 +57,7 @@ using namespace std;
     }
 
     // Move constructor 
-    Myvector::MyVector(MyVector&& other) noexcept
+    MyVector::MyVector(MyVector&& other) noexcept
         : data(other.data),
         capacity(other.capacity),
         size(other.size)
@@ -88,7 +88,7 @@ using namespace std;
     MyVector::MyVector(initializer_list<int> input){
         size = input.size();
         capacity = input.size();
-        data = new int(size);
+        data = new int[size];
         int index{};
         for (auto x : input){
             data[index++] = x;
@@ -97,9 +97,11 @@ using namespace std;
 
     //initalizer list assignment
     MyVector& MyVector::operator=(initializer_list<int> input){
+        delete[] data;
+
         this->size = input.size();
         this->capacity = input.size();
-        data = new int[capacity];
+        data = new int[size];
         
         int index{};
         for (auto &in: input){
