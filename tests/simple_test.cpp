@@ -11,7 +11,7 @@ void test_copy(){
     assert(a.getSize() == b.getSize());
 
     //test capacity
-    assert(a.getCapacty() == b.getCapacty());
+    assert(a.getCapacity() == b.getCapacity());
 
     //test same values
     for (size_t i{}; i < a.getSize(); ++i){
@@ -43,10 +43,10 @@ void test_copy_assignment(){
       4. test still deep copy
       5. test mutation
     */
-   size_t prevCapacity = b.getCapacty();
+   size_t prevCapacity = b.getCapacity();
    b = a;
 
-   assert(b.getCapacty() == prevCapacity);
+   assert(b.getCapacity() == prevCapacity);
    assert(b.getSize() == a.getSize());
    for (size_t i{}; i < b.getSize(); ++i){
         assert(b.getData()[i] == a.getData()[i]);
@@ -61,7 +61,27 @@ void test_copy_assignment(){
 
 }
 
-void test_move(){}
+void test_move(){
+    /*1. capacity and size should be the same
+     2. values should be the same
+     3. test the other object has been reset
+    */
+
+   MyVector b = {100,101,102,103, 104, 105,106};
+   MyVector temp = b;
+   MyVector a = std::move(b);
+   assert(a.getSize() == temp.getSize());
+   assert(a.getCapacity() == temp.getCapacity());
+   for (size_t i{}; i < a.getSize(); ++i){
+      assert(a.getData()[i] == temp.getData()[i]);
+   }
+
+   assert(b.getData() == nullptr);
+   assert(b.getSize() == 0);
+   assert(b.getCapacity() == 0);
+
+
+}
 
 void test_move_assignment(){}
 
@@ -72,6 +92,7 @@ void test_initalizer_list(){}
 int main(){
     test_copy();
     test_copy_assignment();
+    test_move();
     cout << "All tests have passed\n";
 
     return 0;

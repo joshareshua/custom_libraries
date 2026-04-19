@@ -17,7 +17,7 @@ using namespace std;
         return data;
     }
 
-    size_t MyVector::getCapacty(){
+    size_t MyVector::getCapacity(){
         return capacity;
     }
     
