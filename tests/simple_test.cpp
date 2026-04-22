@@ -1,5 +1,5 @@
 #include "../bits/stdc++.h"
-#include "../include/MyVector.h"
+#include "MyVector.h"
 
 using namespace std;
 
@@ -83,9 +83,37 @@ void test_move(){
 
 }
 
-void test_move_assignment(){}
+void test_move_assignment(){
+    MyVector a{1,2,3,4,5};
+    MyVector temp = a;
 
-void test_initalizer_list(){}
+    MyVector b{10,9,8,7};
+    b = std::move(a);
+
+    assert(b.getSize() == temp.getSize());
+    assert(b.getCapacity() == temp.getCapacity());
+
+    for (size_t i{}; i < b.getSize(); ++i){
+        assert(b.getData()[i] == temp.getData()[i]);
+    }
+
+    assert(b.getData() != a.getData());
+    assert(a.getSize() == 0);
+    assert(a.getCapacity() == 0);
+    assert(a.getData() == nullptr);
+}
+
+void test_initalizer_list(){
+    initializer_list<int> in = {1,2,3,4,5};
+    MyVector a(in);
+    assert(a.getSize() == in.size());
+    assert(a.getCapacity() == in.size());
+
+    int index{};
+    for (const auto& x : in){
+        assert(a.getData()[index++] == x);
+    }
+}
 
 
 
@@ -93,6 +121,8 @@ int main(){
     test_copy();
     test_copy_assignment();
     test_move();
+    test_move_assignment();
+    test_initalizer_list();
     cout << "All tests have passed\n";
 
     return 0;
