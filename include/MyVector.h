@@ -17,16 +17,16 @@ public:
 
     int* getData();
 
-    size_t getCapacty();
+    size_t getCapacity();
     
     // Copy constructor for MyVector a = b where a = *this and b = other;
-    MyVector(MyVector& other);
+    MyVector(const MyVector& other);
 
     // Copy assignment or a = b where a = *this and b = other;
-    MyVector& operator=(MyVector& other);
-
+    MyVector& operator=(const MyVector& other);
+    
     // Move constructor 
-    MyVector(MyVector&& other);
+    MyVector(MyVector&& other) noexcept;
 
 
     // Move assignment for a = b
