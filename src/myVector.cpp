@@ -104,7 +104,7 @@ using namespace std;
         data = new int[size];
         
         int index{};
-        for (auto &in: input){
+        for (const auto &in: input){
             data[index] = in;
             ++index;
         }
