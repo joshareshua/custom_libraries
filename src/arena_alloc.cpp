@@ -2,4 +2,9 @@
 
 using namespace std;
 
-class ArenaAlloc{};
+class ArenaAlloc{
+
+    void* allocate(){}
+
+    void reset(){}
+};
