@@ -5,3 +5,5 @@ set(CMAKE_CXX_STANDARD 17)
 add_library(my_lib
     src/MyVector.cpp
 )
+
+target_include_directories(my_lib PUBLIC include)
