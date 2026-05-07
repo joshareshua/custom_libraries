@@ -7,3 +7,7 @@ add_library(my_lib
 )
 
 target_include_directories(my_lib PUBLIC include)
+
+add_executable(test_runner
+    tests/simple_test.cpp
+)
