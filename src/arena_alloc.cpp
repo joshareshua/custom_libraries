@@ -10,6 +10,11 @@ public:
 
 
 private:
-    vector<int*> chunks;
+    struct Chunk{
+        //to be implemented...
+    };
+    vector<Chunk> chunks;
+    size_t default_chunk_size;
+    Chunk& add_chunk(std::size_t minimum_size);
 
 };
