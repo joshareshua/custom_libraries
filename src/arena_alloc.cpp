@@ -4,6 +4,8 @@ using namespace std;
 
 class ArenaAlloc{
 public:
+
+    explicit ArenaAlloc(size_t chunk_size) : default_chunk_size(chunk_size){}
     void* allocate(){}
 
     void reset(){}
