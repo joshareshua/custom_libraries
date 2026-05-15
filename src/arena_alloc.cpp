@@ -6,6 +6,9 @@ class ArenaAlloc{
 public:
 
     explicit ArenaAlloc(size_t chunk_size) : default_chunk_size(chunk_size){}
+    ArenaAlloc(const ArenaAlloc&) = delete;
+    ArenaAlloc& operator=(const ArenaAlloc&) = delete;
+
     void* allocate(){}
 
     void reset(){}
