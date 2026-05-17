@@ -17,6 +17,10 @@ public:
 
     void reset(){}
 
+    size_t used() const {};
+    size_t capacity() const{};
+    size_t chunk_count() const{};
+
 
 private:
     struct Chunk{
