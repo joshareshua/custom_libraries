@@ -24,7 +24,9 @@ public:
 
 private:
     struct Chunk{
-        //to be implemented...
+        unique_ptr<byte[]> data;
+        size_t size;
+        size_t offset;
     };
     vector<Chunk> chunks;
     size_t default_chunk_size;
