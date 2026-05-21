@@ -6,10 +6,6 @@
 
 
 class MyVector{
-    int* data;
-    size_t size;
-    size_t capacity;
-
 public:
     ~MyVector();
 
@@ -39,6 +35,12 @@ public:
     MyVector& operator=(std::initializer_list<int> input);
 
     void print();
+
+
+private:
+    int* data;
+    size_t size;
+    size_t capacity;
 
 
 };
