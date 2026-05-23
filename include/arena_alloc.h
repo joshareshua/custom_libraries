@@ -2,6 +2,7 @@
 #define ARENA_ALLOC_H
 
 #include <cstddef>
+#include <memory>
 
 class ArenaAlloc{
 public:
@@ -15,6 +16,11 @@ public:
     ArenaAlloc& operator=(ArenaAlloc&&) noexcept = default;
 
 private:
+    struct Chunk{
+        std::unique_ptr<std::byte[]> data;
+        size_t size;
+        size_t offset;
+    };
 };
 
 #endif
