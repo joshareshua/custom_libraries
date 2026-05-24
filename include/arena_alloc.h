@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <memory>
+#include <vector>
 
 class ArenaAlloc{
 public:
@@ -21,6 +22,8 @@ private:
         size_t size;
         size_t offset;
     };
+
+    std::vector<Chunk> chunks;
 };
 
 #endif
