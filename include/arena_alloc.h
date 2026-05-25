@@ -24,6 +24,7 @@ private:
     };
 
     std::vector<Chunk> chunks;
+    size_t default_chunk_size;
 };
 
 #endif
