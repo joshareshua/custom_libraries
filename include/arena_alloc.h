@@ -16,6 +16,9 @@ public:
     ArenaAlloc(ArenaAlloc&&) noexcept = default;
     ArenaAlloc& operator=(ArenaAlloc&&) noexcept = default;
 
+    void* allocate(std::size_t bytes, 
+        std::size_t alignment = alignof(std::max_align_t));
+
 private:
     struct Chunk{
         std::unique_ptr<std::byte[]> data;
