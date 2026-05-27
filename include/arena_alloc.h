@@ -19,6 +19,8 @@ public:
     void* allocate(std::size_t bytes, 
         std::size_t alignment = alignof(std::max_align_t));
 
+    void reset(){}
+
 private:
     struct Chunk{
         std::unique_ptr<std::byte[]> data;
