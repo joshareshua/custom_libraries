@@ -19,7 +19,9 @@ public:
     void* allocate(std::size_t bytes, 
         std::size_t alignment = alignof(std::max_align_t));
 
-    void reset(){}
+    void reset();
+
+    size_t used() const;
 
 private:
     struct Chunk{
