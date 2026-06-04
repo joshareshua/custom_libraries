@@ -14,6 +14,18 @@ void ArenaAlloc::reset(){
     chunks.clear();
 }
 
+size_t ArenaAlloc::used() const{
+    size_t usedChunks{};
+
+    for (const auto& chunk : chunks){
+        if (!chunk.data) ++usedChunks;
+    }
+
+    size_t chunkSize = sizeof(Chunk);
+
+    return usedChunks * chunkSize;
+}
+
 
 
 
