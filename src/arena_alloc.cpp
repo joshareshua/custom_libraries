@@ -30,6 +30,10 @@ size_t ArenaAlloc::capacity() const{
     return chunks.size() * default_chunk_size;
 }
 
+size_t ArenaAlloc::chunk_count() const {
+    return chunks.size();
+}
+
 
 
 
