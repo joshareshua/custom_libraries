@@ -10,7 +10,7 @@ public:
 
     explicit ArenaAlloc(size_t chunk_size);
 
-    ArenaAlloc(const ArenaAlloc&) = delete;
+    ArenaAlloc(const ArenaAlloc&);
     ArenaAlloc& operator=(const ArenaAlloc&) = delete;
 
     ArenaAlloc(ArenaAlloc&&) noexcept = default;

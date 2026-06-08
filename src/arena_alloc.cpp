@@ -5,6 +5,8 @@ using namespace std;
 
 explicit ArenaAlloc::ArenaAlloc(size_t chunk_size): default_chunk_size(chunk_size){}
 
+ArenaAlloc::ArenaAlloc(const ArenaAlloc&) = delete;
+
 void* ArenaAlloc::allocate(std::size_t bytes, 
         std::size_t alignment = alignof(std::max_align_t)){
             //tbd...
