@@ -7,6 +7,8 @@ explicit ArenaAlloc::ArenaAlloc(size_t chunk_size): default_chunk_size(chunk_siz
 
 ArenaAlloc::ArenaAlloc(const ArenaAlloc&) = delete;
 
+ArenaAlloc& ArenaAlloc::operator=(const ArenaAlloc&) = delete;
+
 ArenaAlloc::ArenaAlloc(ArenaAlloc&&) noexcept = default;
 
 void* ArenaAlloc::allocate(std::size_t bytes, 

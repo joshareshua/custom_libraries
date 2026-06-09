@@ -11,9 +11,9 @@ public:
     explicit ArenaAlloc(size_t chunk_size);
 
     ArenaAlloc(const ArenaAlloc&);
-    ArenaAlloc& operator=(const ArenaAlloc&) = delete;
+    ArenaAlloc& operator=(const ArenaAlloc&);
 
-    ArenaAlloc(ArenaAlloc&&) noexcept = default;
+    ArenaAlloc(ArenaAlloc&&);
     ArenaAlloc& operator=(ArenaAlloc&&) noexcept = default;
 
     void* allocate(std::size_t bytes, 
