@@ -14,7 +14,7 @@ public:
     ArenaAlloc& operator=(const ArenaAlloc&);
 
     ArenaAlloc(ArenaAlloc&&);
-    ArenaAlloc& operator=(ArenaAlloc&&) noexcept = default;
+    ArenaAlloc& operator=(ArenaAlloc&&);
 
     void* allocate(std::size_t bytes, 
         std::size_t alignment = alignof(std::max_align_t));
