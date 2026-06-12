@@ -3,6 +3,8 @@
 
 using namespace std;
 
+//Special Member functions
+
 explicit ArenaAlloc::ArenaAlloc(size_t chunk_size): default_chunk_size(chunk_size){}
 
 
@@ -13,6 +15,9 @@ ArenaAlloc& ArenaAlloc::operator=(const ArenaAlloc&) = delete;
 ArenaAlloc::ArenaAlloc(ArenaAlloc&&) noexcept = default;
 ArenaAlloc& ArenaAlloc::operator=(ArenaAlloc&&) noexcept = default;
 
+
+
+//Helper Functions
 
 void* ArenaAlloc::allocate(std::size_t bytes, 
         std::size_t alignment = alignof(std::max_align_t)){
