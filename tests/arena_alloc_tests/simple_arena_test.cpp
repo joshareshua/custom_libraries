@@ -13,6 +13,10 @@ void test_init(){
 
 }
 
+void test_alloc(){
+    
+}
+
 int main(){
     return 0;
 }
