@@ -14,8 +14,13 @@ void test_init(){
 }
 
 void test_alloc(){
-    
+    ArenaAlloc A(4);
+    A.allocate(100);
+    A.reset();
+    assert(A.used() == 0);
 }
+
+
 
 int main(){
     return 0;
