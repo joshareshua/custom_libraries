@@ -13,6 +13,8 @@ void test_init(){
 
 }
 
+
+
 void test_alloc(){
     ArenaAlloc A(4);
     A.allocate(100);

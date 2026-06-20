@@ -21,7 +21,20 @@ ArenaAlloc& ArenaAlloc::operator=(ArenaAlloc&&) noexcept = default;
 
 void* ArenaAlloc::allocate(std::size_t bytes, 
         std::size_t alignment = alignof(std::max_align_t)){
-            //tbd...
+
+            size_t currBytes = bytes;
+            size_t begin = -1;
+            for (size_t start{}; start < chunks.size(); ++start){
+                if (currBytes <= 0)break;
+                if (chunks[start].data != nullptr){
+                    chunks[start] = add_chunk(default_chunk_size);
+                    currBytes -= default_chunk_size;
+                    if (begin == -1) begin = start;
+                }
+            }
+
+            return &(chunks[begin]);
+
 }
 
 void ArenaAlloc::reset(){
