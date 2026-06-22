@@ -24,16 +24,13 @@ void* ArenaAlloc::allocate(std::size_t bytes,
 
             size_t currBytes = bytes;
             size_t begin = -1;
-            for (size_t start{}; start < chunks.size(); ++start){
-                if (currBytes <= 0)break;
-                if (chunks[start].data != nullptr){
-                    chunks[start] = add_chunk(default_chunk_size);
-                    currBytes -= default_chunk_size;
-                    if (begin == -1) begin = start;
-                }
+            
+            while(currBytes > 0){
+                chunks.push_back(add_chunk(default_chunk_size));
+                currBytes -= default_chunk_size;
             }
 
-            if (bytes > 0) return nullptr;
+            if (currBytes > 0) return nullptr;
 
             return &(chunks[begin]);
 
