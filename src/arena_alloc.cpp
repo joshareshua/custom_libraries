@@ -33,7 +33,6 @@ void* ArenaAlloc::allocate(std::size_t bytes,
             if (currBytes > 0) return nullptr;
 
             return &(chunks[begin]);
-
 }
 
 void ArenaAlloc::reset(){
