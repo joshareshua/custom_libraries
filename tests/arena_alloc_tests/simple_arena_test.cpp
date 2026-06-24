@@ -13,8 +13,6 @@ void test_init(){
 
 }
 
-
-
 void test_alloc(){
     ArenaAlloc A(4);
     A.allocate(100);
@@ -31,5 +29,10 @@ void test_reset(){
 
 
 int main(){
+    test_init();
+    test_alloc();
+    test_reset();
+
+    cout << "All tests passed\n";
     return 0;
 }
