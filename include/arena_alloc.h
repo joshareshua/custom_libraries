@@ -24,6 +24,7 @@ public:
     size_t used() const;
     size_t capacity() const;
     size_t chunk_count() const{};
+    size_t get_available() const{};
 
 private:
     struct Chunk{
