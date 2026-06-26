@@ -59,6 +59,10 @@ size_t ArenaAlloc::chunk_count() const {
     return chunks.size();
 }
 
+size_t ArenaAlloc::get_available() const {
+    //to do...
+}
+
 
 
 
