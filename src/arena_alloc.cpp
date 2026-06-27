@@ -60,7 +60,13 @@ size_t ArenaAlloc::chunk_count() const {
 }
 
 size_t ArenaAlloc::get_available() const {
-    //to do...
+    size_t availableBytes{};
+
+    for (size_t i{}; i < chunks.size(); ++i){
+        if (!chunks[i].data) availableBytes += default_chunk_size;
+    }
+
+    return availableBytes;
 }
 
 
