@@ -19,6 +19,7 @@ ArenaAlloc& ArenaAlloc::operator=(ArenaAlloc&&) noexcept = default;
 
 //Helper Functions
 
+// Seearch allocator if requested bytes available and allocate
 void* ArenaAlloc::allocate(std::size_t bytes, 
         std::size_t alignment = alignof(std::max_align_t)){
 
