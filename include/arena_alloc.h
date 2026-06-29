@@ -10,11 +10,11 @@ public:
 
     explicit ArenaAlloc(size_t chunk_size);
 
-    ArenaAlloc(const ArenaAlloc&);
-    ArenaAlloc& operator=(const ArenaAlloc&);
+    ArenaAlloc(const ArenaAlloc&) = delete;
+    ArenaAlloc& operator=(const ArenaAlloc&) = delete;
 
-    ArenaAlloc(ArenaAlloc&&);
-    ArenaAlloc& operator=(ArenaAlloc&&);
+    ArenaAlloc(ArenaAlloc&&) = default;
+    ArenaAlloc& operator=(ArenaAlloc&&) = default;
 
     void* allocate(std::size_t bytes, 
         std::size_t alignment = alignof(std::max_align_t));

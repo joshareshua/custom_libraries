@@ -5,16 +5,7 @@ using namespace std;
 
 //Special Member functions
 
-explicit ArenaAlloc::ArenaAlloc(size_t chunk_size): default_chunk_size(chunk_size){}
-
-
-ArenaAlloc::ArenaAlloc(const ArenaAlloc&) = delete;
-ArenaAlloc& ArenaAlloc::operator=(const ArenaAlloc&) = delete;
-
-
-ArenaAlloc::ArenaAlloc(ArenaAlloc&&) noexcept = default;
-ArenaAlloc& ArenaAlloc::operator=(ArenaAlloc&&) noexcept = default;
-
+ArenaAlloc::ArenaAlloc(size_t chunk_size): default_chunk_size(chunk_size){}
 
 
 //Helper Functions
