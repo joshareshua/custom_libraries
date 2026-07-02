@@ -12,7 +12,7 @@ ArenaAlloc::ArenaAlloc(size_t chunk_size): default_chunk_size(chunk_size){}
 
 // Seearch allocator if requested bytes available and allocate
 void* ArenaAlloc::allocate(std::size_t bytes, 
-        std::size_t alignment = alignof(std::max_align_t)){
+        std::size_t alignment){
 
             size_t currBytes = bytes;
             size_t begin = -1;
@@ -25,6 +25,10 @@ void* ArenaAlloc::allocate(std::size_t bytes,
             if (currBytes > 0) return nullptr;
 
             return &(chunks[begin]);
+}
+
+ArenaAlloc::Chunk& ArenaAlloc::add_chunk(std::size_t minimum_size){
+    //tbd...
 }
 
 void ArenaAlloc::reset(){
