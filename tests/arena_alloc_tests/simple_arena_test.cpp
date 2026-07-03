@@ -26,6 +26,15 @@ void test_reset(){
     assert(A.used() == 0);
 }
 
+void test_addChunk(){
+    ArenaAlloc A(4);
+    A.allocate(100);
+    assert(A.capacity() == 25);
+    A.allocate(400);
+    assert(A.capacity() == 100);
+
+}
+
 
 
 int main(){
