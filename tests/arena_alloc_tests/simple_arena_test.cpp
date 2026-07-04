@@ -3,8 +3,6 @@
 
 using namespace std;
 
-
-
 void test_init(){
     // testing initalizing allocator and allocating bytes
     ArenaAlloc A(4);
@@ -32,7 +30,6 @@ void test_addChunk(){
     assert(A.capacity() == 25);
     A.allocate(400);
     assert(A.capacity() == 100);
-
 }
 
 
@@ -41,6 +38,7 @@ int main(){
     test_init();
     test_alloc();
     test_reset();
+    test_addChunk();
 
     cout << "All tests passed\n";
     return 0;
