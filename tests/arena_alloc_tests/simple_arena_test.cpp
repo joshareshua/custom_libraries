@@ -32,6 +32,10 @@ void test_addChunk(){
     assert(A.capacity() == 100);
 }
 
+void test_addChunk_edge(){
+    //tbd...
+}
+
 
 
 int main(){
