@@ -37,7 +37,15 @@ void test_addChunk_edge(){
 }
 
 void test_alloc_edge(){
-    //tbd;;;
+    ArenaAlloc A(4);
+    bool threw = false;
+    try{
+        A.allocate(static_cast<std::size_t>(-1));
+    } catch (const std::invalid_argument& ){
+        threw = true;
+    }
+
+    assert(threw);
 }
 
 
