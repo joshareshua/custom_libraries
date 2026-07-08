@@ -38,14 +38,22 @@ void test_addChunk_edge(){
 
 void test_alloc_edge(){
     ArenaAlloc A(4);
-    bool threw = false;
+    bool negativeNumber = false;
     try{
         A.allocate(static_cast<std::size_t>(-1));
     } catch (const std::invalid_argument& ){
-        threw = true;
+        negativeNumber = true;
     }
 
-    assert(threw);
+    bool invalidChar = false;
+    try{
+        A.allocate('5');
+    } catch(const std::invalid_argument&){
+        invalidChar = true;
+    }
+
+    assert(negativeNumber);
+    assert(invalidChar);
 }
 
 
