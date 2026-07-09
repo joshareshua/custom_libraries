@@ -45,12 +45,17 @@ void test_alloc_edge(){
         negativeNumber = true;
     }
 
-    bool invalidChar = false;
+    bool invalidInput = false;
     try{
         A.allocate('5');
+        A.allocate('g');
+        A.allocate('X');
+        A.allocate('a');
     } catch(const std::invalid_argument&){
-        invalidChar = true;
+        invalidInput = true;
     }
+
+
 
     assert(negativeNumber);
     assert(invalidChar);
