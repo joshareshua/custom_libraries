@@ -32,6 +32,35 @@ void test_addChunk(){
     assert(A.capacity() == 100);
 }
 
+void test_addChunk_edge(){
+    //tbd...
+}
+
+void test_alloc_edge(){
+    ArenaAlloc A(4);
+    bool negativeNumber = false;
+    try{
+        A.allocate(static_cast<std::size_t>(-1));
+    } catch (const std::invalid_argument& ){
+        negativeNumber = true;
+    }
+
+    bool invalidInput = false;
+    try{
+        A.allocate('5');
+        A.allocate('g');
+        A.allocate('X');
+        A.allocate('a');
+    } catch(const std::invalid_argument&){
+        invalidInput = true;
+    }
+
+
+
+    assert(negativeNumber);
+    assert(invalidInput);
+}
+
 
 
 int main(){
