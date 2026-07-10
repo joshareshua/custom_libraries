@@ -58,7 +58,7 @@ void test_alloc_edge(){
 
 
     assert(negativeNumber);
-    assert(invalidChar);
+    assert(invalidInput);
 }
 
 
