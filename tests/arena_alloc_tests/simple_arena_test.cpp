@@ -36,6 +36,14 @@ void test_addChunk_edge(){
     //tbd...
 }
 
+void test_allocate_returns_valid_pointer(){
+    //tbd...
+}
+
+void test_alignment(){
+    //tbh...
+}
+
 void test_alloc_edge(){
     ArenaAlloc A(4);
     bool negativeNumber = false;
