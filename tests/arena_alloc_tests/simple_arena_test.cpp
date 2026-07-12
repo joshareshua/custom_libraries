@@ -41,7 +41,19 @@ void test_allocate_returns_valid_pointer(){
 }
 
 void test_alignment(){
-    //tbh...
+    //tbd...
+}
+
+void test_invalid_size_throws(){
+    //tbd...
+}
+
+void test_reuses_freed_memory(){
+    //tbd...
+}
+
+void test_expands_when_full(){
+    //tbd...
 }
 
 void test_alloc_edge(){
