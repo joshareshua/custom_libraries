@@ -53,7 +53,11 @@ void test_reuses_freed_memory(){
 }
 
 void test_expands_when_full(){
-    //tbd...
+    ArenaAlloc A(4);
+    assert(A.capacity() == 0);
+    A.allocate(100);
+    assert(A.capacity() != 0);
+
 }
 
 void test_alloc_edge(){
