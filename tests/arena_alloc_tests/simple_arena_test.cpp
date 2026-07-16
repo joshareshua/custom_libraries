@@ -45,7 +45,14 @@ void test_alignment(){
 }
 
 void test_invalid_size_throws(){
-    //tbd...
+    try{
+        ArenaAlloc A(-1);
+
+        assert(false && "Invalid size did not throw");
+
+    } catch(...){
+        cout << "Test invalid size throws passed.";
+    }
 }
 
 void test_reuses_freed_memory(){
