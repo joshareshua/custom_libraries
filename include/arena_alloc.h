@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 
+template <typename T>
 class ArenaAlloc{
 public:
 
