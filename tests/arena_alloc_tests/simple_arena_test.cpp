@@ -36,6 +36,37 @@ void test_addChunk_edge(){
     //tbd...
 }
 
+void test_allocate_returns_valid_pointer(){
+    //tbd...
+}
+
+void test_alignment(){
+    //tbd...
+}
+
+void test_invalid_size_throws(){
+    try{
+        ArenaAlloc A(-1);
+
+        assert(false && "Invalid size did not throw");
+
+    } catch(...){
+        cout << "Test invalid size throws passed.";
+    }
+}
+
+void test_reuses_freed_memory(){
+    //tbd...
+}
+
+void test_expands_when_full(){
+    ArenaAlloc A(4);
+    assert(A.capacity() == 0);
+    A.allocate(100);
+    assert(A.capacity() != 0);
+
+}
+
 void test_alloc_edge(){
     ArenaAlloc A(4);
     bool negativeNumber = false;

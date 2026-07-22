@@ -5,13 +5,20 @@
 #include <initializer_list>
 
 
+template<typename T>
 class MyVector{
 public:
-    ~MyVector();
+    ~MyVector(){
+        delete data;
+    }
 
-    size_t getSize();
+    size_t getSize(){
+        return size;
+    }
 
-    int* getData();
+    T* getData(){
+        return data;
+    }
 
     size_t getCapacity();
     
@@ -38,7 +45,7 @@ public:
 
 
 private:
-    int* data;
+    T* data;
     size_t size;
     size_t capacity;
 
