@@ -8,11 +8,17 @@
 template<typename T>
 class MyVector{
 public:
-    ~MyVector();
+    ~MyVector(){
+        delete data;
+    }
 
-    size_t getSize();
+    size_t getSize(){
+        return size;
+    }
 
-    T* getData();
+    T* getData(){
+        return data;
+    }
 
     size_t getCapacity();
     

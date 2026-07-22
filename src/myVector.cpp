@@ -4,19 +4,6 @@
 using namespace std;
 
 
-
-    MyVector::~MyVector(){
-        delete[] data;
-    }
-
-    size_t MyVector::getSize(){
-        return size;
-    }
-
-    int* MyVector::getData(){
-        return data;
-    }
-
     size_t MyVector::getCapacity(){
         return capacity;
     }
