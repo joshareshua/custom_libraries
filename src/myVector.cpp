@@ -4,19 +4,9 @@
 using namespace std;
 
 
-    size_t MyVector::getCapacity(){
-        return capacity;
-    }
     
     // Copy constructor for MyVector a = b where a = *this and b = other;
-    MyVector::MyVector(const MyVector& other){
-        capacity = other.capacity;
-        size = other.size;
-        data = new int[capacity];
-        for (size_t i{}; i < size; ++i){
-            data[i] = other.data[i];
-        }
-    }
+  
 
     // Copy assignment or a = b where a = *this and b = other;
     MyVector& MyVector::operator=(const MyVector& other){

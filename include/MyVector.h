@@ -20,10 +20,20 @@ public:
         return data;
     }
 
-    size_t getCapacity();
+    size_t getCapacity(){
+        return capacity;
+    }
     
     // Copy constructor for MyVector a = b where a = *this and b = other;
-    MyVector(const MyVector& other);
+    MyVector(const MyVector& other){
+        capacity = other.capacity;
+        size = other.size;
+        data = new T[capacity];
+
+        for (size_t i{}; i < size; ++i){
+            data[i] = other.data[i];
+        }
+    }
 
     // Copy assignment or a = b where a = *this and b = other;
     MyVector& operator=(const MyVector& other);
