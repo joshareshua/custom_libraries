@@ -36,7 +36,13 @@ public:
     }
 
     // Copy assignment or a = b where a = *this and b = other;
-    MyVector& operator=(const MyVector& other);
+    MyVector& operator=(MyVector other){
+        swap(this->data, other.data);
+        swap(this->size, other.size);
+        swap(this->capacity, other.capacity);        
+
+        return *this;
+    }
     
     // Move constructor 
     MyVector(MyVector&& other) noexcept;
