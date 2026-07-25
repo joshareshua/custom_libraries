@@ -36,6 +36,12 @@ public:
     }
 
     // Copy assignment or a = b where a = *this and b = other;
+    /*
+        We use pass my value so it attempts to construct
+        the object in call site of the function and any exceptions
+        would happen here before the function body executation
+        solving any data corruption issues 
+    */
     MyVector& operator=(MyVector other){
         swap(this->data, other.data);
         swap(this->size, other.size);
@@ -59,6 +65,8 @@ public:
 
     void print();
 
+    size_t getSize(){ return size; }
+    size_t getCapacty(){ return capacity; }
 
 private:
     T* data;
