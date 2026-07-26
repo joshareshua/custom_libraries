@@ -63,7 +63,6 @@ public:
     //initalizer list assignment
     MyVector& operator=(std::initializer_list<int> input);
 
-    void print();
 
     size_t getSize(){ return size; }
     size_t getCapacty(){ return capacity; }

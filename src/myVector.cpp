@@ -87,12 +87,5 @@ using namespace std;
         }
         
         return *this;
-    }
-
-    void MyVector::print(){
-        for (size_t i{}; i < size; ++i){
-            cout << data[i] << '\t';
-        }
-        cout << '\n';
-    }
+    } 
 
