@@ -51,7 +51,15 @@ public:
     }
     
     // Move constructor 
-    MyVector(MyVector&& other) noexcept;
+    MyVector(MyVector&& other) noexcept
+        : data(other.data),
+        capacity(other.capacity),
+        size(other.size){
+            other.data = 
+            other.capacity = 0;
+            other.size = 0;
+        }
+        
 
 
     // Move assignment for a = b

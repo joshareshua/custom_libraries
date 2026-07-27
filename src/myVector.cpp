@@ -33,17 +33,6 @@ using namespace std;
         return *this;
     }
 
-    // Move constructor 
-    MyVector::MyVector(MyVector&& other) noexcept
-        : data(other.data),
-        capacity(other.capacity),
-        size(other.size)
-    {
-        other.data = nullptr;
-        other.capacity = 0;
-        other.size = 0;
-    }  
-
 
     // Move assignment for a = b
     MyVector& MyVector::operator=(MyVector&& other) noexcept {
