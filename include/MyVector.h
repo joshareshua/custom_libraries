@@ -75,6 +75,8 @@ public:
     size_t getSize(){ return size; }
     size_t getCapacty(){ return capacity; }
 
+    T& operator[](size_t index){ return data[index]; }
+
 private:
     T* data;
     size_t size;
