@@ -76,6 +76,7 @@ public:
     size_t getCapacty(){ return capacity; }
 
     T& operator[](size_t index){ return data[index]; }
+    const T& operator[](size_t index) const { return data[index]; }
 
 private:
     T* data;
