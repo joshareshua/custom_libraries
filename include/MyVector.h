@@ -69,7 +69,19 @@ public:
     MyVector(std::initializer_list<int> input);
 
     //initalizer list assignment
-    MyVector& operator=(std::initializer_list<int> input);
+    MyVector& operator=(std::initializer_list<T> input){
+        delete[] data;
+        size = input.size();
+        capacity = input.size();
+        data = new T[capacity];
+
+
+        for (size_t i{}; i < size; ++i){
+            data[i] = input[i];
+        }
+
+        return this*;
+    }
 
 
     size_t getSize(){ return size; }
