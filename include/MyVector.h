@@ -66,7 +66,15 @@ public:
     MyVector& operator=(MyVector&& other) noexcept;
 
     //initalizer list
-    MyVector(std::initializer_list<int> input);
+    MyVector(std::initializer_list<int> input){
+        size = input.size();
+        capacity = size * 2;
+        data = new T[size];
+
+        for (int i{}; i < size; ++i){
+            data[i] = input[i];
+        }
+    }
 
     //initalizer list assignment
     MyVector& operator=(std::initializer_list<T> input){
