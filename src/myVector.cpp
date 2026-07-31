@@ -4,19 +4,9 @@
 using namespace std;
 
 
-    size_t MyVector::getCapacity(){
-        return capacity;
-    }
     
     // Copy constructor for MyVector a = b where a = *this and b = other;
-    MyVector::MyVector(const MyVector& other){
-        capacity = other.capacity;
-        size = other.size;
-        data = new int[capacity];
-        for (size_t i{}; i < size; ++i){
-            data[i] = other.data[i];
-        }
-    }
+  
 
     // Copy assignment or a = b where a = *this and b = other;
     MyVector& MyVector::operator=(const MyVector& other){
@@ -42,17 +32,6 @@ using namespace std;
         size = other.size; 
         return *this;
     }
-
-    // Move constructor 
-    MyVector::MyVector(MyVector&& other) noexcept
-        : data(other.data),
-        capacity(other.capacity),
-        size(other.size)
-    {
-        other.data = nullptr;
-        other.capacity = 0;
-        other.size = 0;
-    }  
 
 
     // Move assignment for a = b
@@ -97,12 +76,5 @@ using namespace std;
         }
         
         return *this;
-    }
-
-    void MyVector::print(){
-        for (size_t i{}; i < size; ++i){
-            cout << data[i] << '\t';
-        }
-        cout << '\n';
-    }
+    } 
 
