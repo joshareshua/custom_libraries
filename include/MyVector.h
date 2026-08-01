@@ -37,7 +37,7 @@ public:
 
     // Copy assignment or a = b where a = *this and b = other;
     /*
-        We use pass my value so it attempts to construct
+        We use pass by value so it attempts to construct
         the object in call site of the function and any exceptions
         would happen here before the function body executation
         solving any data corruption issues 
@@ -76,11 +76,21 @@ public:
         }
     }
 
+    MyVector(std::initializer_lis<T> input) 
+        : size(input.size())
+        , capacity(input.size() * 2){
+        
+            data = new T[capacity];
+            for (int i{}; i < input.size(); ++i){
+                data[i] = input[i];
+            }
+    }
+
     //initalizer list assignment
     MyVector& operator=(std::initializer_list<T> input){
         delete[] data;
         size = input.size();
-        capacity = input.size();
+        capacity = input.size() * 2;
         data = new T[capacity];
 
 
