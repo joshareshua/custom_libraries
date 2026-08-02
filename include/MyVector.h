@@ -9,7 +9,7 @@ template<typename T>
 class MyVector{
 public:
     ~MyVector(){
-        delete data;
+        delete[] data;
     }
 
     size_t getSize(){
@@ -55,7 +55,7 @@ public:
         : data(other.data),
         capacity(other.capacity),
         size(other.size){
-            other.data = 
+            other.data = nullptr
             other.capacity = 0;
             other.size = 0;
         }
@@ -76,7 +76,7 @@ public:
         }
     }
 
-    MyVector(std::initializer_lis<T> input) 
+    MyVector(std::initializer_list<T> input) 
         : size(input.size())
         , capacity(input.size() * 2){
         
@@ -98,7 +98,7 @@ public:
             data[i] = input[i];
         }
 
-        return this*;
+        return *this;
     }
 
 
