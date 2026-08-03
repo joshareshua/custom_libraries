@@ -50,14 +50,3 @@ using namespace std;
         return *this;
     }
 
-    //initalizer list
-    MyVector::MyVector(initializer_list<int> input){
-        size = input.size();
-        capacity = input.size();
-        data = new int[size];
-        int index{};
-        for (auto x : input){
-            data[index++] = x;
-        }
-    }
-

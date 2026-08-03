@@ -76,6 +76,8 @@ public:
         }
     }
 
+    //If T is not default constructible this will no compile
+    // Need to alocate and construct elements manually
     MyVector(std::initializer_list<T> input) 
         : size(input.size())
         , capacity(input.size() * 2){
