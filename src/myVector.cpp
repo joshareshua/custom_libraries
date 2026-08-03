@@ -61,20 +61,3 @@ using namespace std;
         }
     }
 
-    //initalizer list assignment
-    MyVector& MyVector::operator=(initializer_list<int> input){
-        delete[] data;
-
-        this->size = input.size();
-        this->capacity = input.size();
-        data = new int[size];
-        
-        int index{};
-        for (const auto &in: input){
-            data[index] = in;
-            ++index;
-        }
-        
-        return *this;
-    } 
-
