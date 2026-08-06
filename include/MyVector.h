@@ -39,7 +39,7 @@ public:
     /*
         We use pass by value so it attempts to construct
         the object in call site of the function and any exceptions
-        would happen here before the function body executation
+        would happen here before the function body execution
         solving any data corruption issues 
     */
     MyVector& operator=(MyVector other){
@@ -49,6 +49,12 @@ public:
 
         return *this;
     }
+
+    // Optimized copy assignment
+    MyVector& operator=(const MyVector& other){
+        //tbd...
+    }
+
     
     // Move constructor 
     MyVector(MyVector&& other) noexcept
