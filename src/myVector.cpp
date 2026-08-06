@@ -32,21 +32,3 @@ using namespace std;
         size = other.size; 
         return *this;
     }
-
-
-    // Move assignment for a = b
-    MyVector& MyVector::operator=(MyVector&& other) noexcept {
-        if (this == &other) return *this;
-
-        delete[] data;
-        size = other.size;
-        capacity = other.capacity;
-        data = other.data;
-
-        other.size = 0;
-        other.capacity = 0;
-        other.data = nullptr;
-
-        return *this;
-    }
-

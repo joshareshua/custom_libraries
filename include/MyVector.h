@@ -63,7 +63,21 @@ public:
 
 
     // Move assignment for a = b
-    MyVector& operator=(MyVector&& other) noexcept;
+    MyVector& operator=(MyVector&& other) noexcept{
+        if (&other == this) return *this;
+
+        delete[] data;
+
+        size = other.size;
+        capacity = other.capacity;
+        data = other.data;
+
+        other.data = nullptr;
+        other.size = 0;
+        other.capacity = 0;
+
+        return *this;
+    }
 
     //initalizer list
     MyVector(std::initializer_list<int> input){
