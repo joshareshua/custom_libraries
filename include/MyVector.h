@@ -9,7 +9,7 @@ template<typename T>
 class MyVector{
 public:
     ~MyVector(){
-        delete data;
+        delete[] data;
     }
 
     size_t getSize(){
@@ -37,7 +37,7 @@ public:
 
     // Copy assignment or a = b where a = *this and b = other;
     /*
-        We use pass my value so it attempts to construct
+        We use pass by value so it attempts to construct
         the object in call site of the function and any exceptions
         would happen here before the function body executation
         solving any data corruption issues 
@@ -55,7 +55,7 @@ public:
         : data(other.data),
         capacity(other.capacity),
         size(other.size){
-            other.data = 
+            other.data = nullptr
             other.capacity = 0;
             other.size = 0;
         }
@@ -63,7 +63,21 @@ public:
 
 
     // Move assignment for a = b
-    MyVector& operator=(MyVector&& other) noexcept;
+    MyVector& operator=(MyVector&& other) noexcept{
+        if (&other == this) return *this;
+
+        delete[] data;
+
+        size = other.size;
+        capacity = other.capacity;
+        data = other.data;
+
+        other.data = nullptr;
+        other.size = 0;
+        other.capacity = 0;
+
+        return *this;
+    }
 
     //initalizer list
     MyVector(std::initializer_list<int> input){
@@ -76,11 +90,23 @@ public:
         }
     }
 
+    //If T is not default constructible this will no compile
+    // Need to alocate and construct elements manually
+    MyVector(std::initializer_list<T> input) 
+        : size(input.size())
+        , capacity(input.size() * 2){
+        
+            data = new T[capacity];
+            for (int i{}; i < input.size(); ++i){
+                data[i] = input[i];
+            }
+    }
+
     //initalizer list assignment
     MyVector& operator=(std::initializer_list<T> input){
         delete[] data;
         size = input.size();
-        capacity = input.size();
+        capacity = input.size() * 2;
         data = new T[capacity];
 
 
@@ -88,7 +114,7 @@ public:
             data[i] = input[i];
         }
 
-        return this*;
+        return *this;
     }
 
 
