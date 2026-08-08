@@ -131,7 +131,7 @@ public:
     const T& operator[](size_t index) const { return data[index]; }
 
 private:
-    T* data;
+    T* data = nullptr;
     size_t size;
     size_t capacity;
 

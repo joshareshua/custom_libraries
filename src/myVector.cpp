@@ -5,7 +5,7 @@ using namespace std;
 
 
     
-    // Copy constructor for MyVector a = b where a = *this and b = other;
+
   
 
     // Copy assignment or a = b where a = *this and b = other;
