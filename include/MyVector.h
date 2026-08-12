@@ -52,7 +52,21 @@ public:
 
     // Optimized copy assignment
     MyVector& operator=(const MyVector& other){
-        //tbd...
+        if (this == &other) return *this;
+
+        if (other.size < this->size){
+            for (size_t i{}; i < size; ++i){
+                data[i] = other[i];
+            }
+        } else {
+            data = new T[capacity];
+            size = other.size;
+            capacty = other.capacity;
+
+            for (int i{}; i < size; ++i){
+                data[i] = other->data[i];
+            }
+        }
     }
 
     
