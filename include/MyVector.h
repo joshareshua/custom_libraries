@@ -54,19 +54,26 @@ public:
     MyVector& operator=(const MyVector& other){
         if (this == &other) return *this;
 
-        if (other.size < this->size){
+        if (other.size <= capacity){
             for (size_t i{}; i < size; ++i){
-                data[i] = other[i];
+                data[i] = other.data[i];
             }
-        } else {
-            data = new T[capacity];
             size = other.size;
-            capacty = other.capacity;
+            return *this;
 
-            for (int i{}; i < size; ++i){
-                data[i] = other->data[i];
+        } else {
+            T* newData = new T[other.capacity];
+            for (size_t i{}; i < size; ++i){
+                newData[i] = other.data[i];
             }
+            delete[] data;
+            data = newData;
+            size = other.size;
+            capacity = other.capacity;
+
+
         }
+        return *this;
     }
 
     
@@ -146,8 +153,8 @@ public:
 
 private:
     T* data = nullptr;
-    size_t size;
-    size_t capacity;
+    size_t size{};
+    size_t capacity{};
 
 
 };
