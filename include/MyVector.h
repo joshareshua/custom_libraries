@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <initializer_list>
+#include <utility>
 
 
 template<typename T>
@@ -43,9 +44,9 @@ public:
         solving any data corruption issues 
     */
     MyVector& operator=(MyVector other){
-        swap(this->data, other.data);
-        swap(this->size, other.size);
-        swap(this->capacity, other.capacity);        
+        std::swap(this->data, other.data);
+        std::swap(this->size, other.size);
+        std::swap(this->capacity, other.capacity);        
 
         return *this;
     }
@@ -60,7 +61,7 @@ public:
             }
             size = other.size;
             return *this;
-
+            
         } else {
             T* newData = new T[other.capacity];
             for (size_t i{}; i < size; ++i){
@@ -82,7 +83,7 @@ public:
         : data(other.data),
         capacity(other.capacity),
         size(other.size){
-            other.data = nullptr
+            other.data = nullptr;
             other.capacity = 0;
             other.size = 0;
         }
@@ -111,9 +112,10 @@ public:
         size = input.size();
         capacity = size * 2;
         data = new T[size];
-
-        for (int i{}; i < size; ++i){
-            data[i] = input[i];
+        
+        int index{};
+        for (const auto& e : input){
+            data[index++] = e;
         }
     }
 
@@ -144,8 +146,6 @@ public:
         return *this;
     }
 
-
-    size_t getSize(){ return size; }
     size_t getCapacty(){ return capacity; }
 
     T& operator[](size_t index){ return data[index]; }

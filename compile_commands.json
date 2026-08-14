@@ -1,0 +1,32 @@
+[
+  {
+    "directory": "/Users/joshareshua/Documents/Personal_Projects/custom_libraries",
+    "file": "/Users/joshareshua/Documents/Personal_Projects/custom_libraries/src/arena_alloc.cpp",
+    "command": "/opt/homebrew/opt/llvm/bin/clang++ -Iinclude -std=c++17 -c /Users/joshareshua/Documents/Personal_Projects/custom_libraries/src/arena_alloc.cpp -o src/arena_alloc.o"
+  },
+  {
+    "directory": "/Users/joshareshua/Documents/Personal_Projects/custom_libraries",
+    "file": "/Users/joshareshua/Documents/Personal_Projects/custom_libraries/src/myPtr.cpp",
+    "command": "/opt/homebrew/opt/llvm/bin/clang++ -Iinclude -std=c++17 -c /Users/joshareshua/Documents/Personal_Projects/custom_libraries/src/myPtr.cpp -o src/myPtr.o"
+  },
+  {
+    "directory": "/Users/joshareshua/Documents/Personal_Projects/custom_libraries",
+    "file": "/Users/joshareshua/Documents/Personal_Projects/custom_libraries/src/myVector.cpp",
+    "command": "/opt/homebrew/opt/llvm/bin/clang++ -Iinclude -std=c++17 -c /Users/joshareshua/Documents/Personal_Projects/custom_libraries/src/myVector.cpp -o src/myVector.o"
+  },
+  {
+    "directory": "/Users/joshareshua/Documents/Personal_Projects/custom_libraries",
+    "file": "/Users/joshareshua/Documents/Personal_Projects/custom_libraries/src/pool_allocator.cpp",
+    "command": "/opt/homebrew/opt/llvm/bin/clang++ -Iinclude -std=c++17 -c /Users/joshareshua/Documents/Personal_Projects/custom_libraries/src/pool_allocator.cpp -o src/pool_allocator.o"
+  },
+  {
+    "directory": "/Users/joshareshua/Documents/Personal_Projects/custom_libraries",
+    "file": "/Users/joshareshua/Documents/Personal_Projects/custom_libraries/src/ringBuffer.cpp",
+    "command": "/opt/homebrew/opt/llvm/bin/clang++ -Iinclude -std=c++17 -c /Users/joshareshua/Documents/Personal_Projects/custom_libraries/src/ringBuffer.cpp -o src/ringBuffer.o"
+  },
+  {
+    "directory": "/Users/joshareshua/Documents/Personal_Projects/custom_libraries",
+    "file": "/Users/joshareshua/Documents/Personal_Projects/custom_libraries/tests/vector_tests/simple_test.cpp",
+    "command": "/opt/homebrew/opt/llvm/bin/clang++ -Iinclude -Itests -std=c++17 -c /Users/joshareshua/Documents/Personal_Projects/custom_libraries/tests/vector_tests/simple_test.cpp -o tests/vector_tests/simple_test.o"
+  }
+]
