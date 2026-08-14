@@ -42,14 +42,14 @@ public:
         the object in call site of the function and any exceptions
         would happen here before the function body execution
         solving any data corruption issues 
-    */
+    
     MyVector& operator=(MyVector other){
         std::swap(this->data, other.data);
         std::swap(this->size, other.size);
         std::swap(this->capacity, other.capacity);        
 
         return *this;
-    }
+    }*/
 
     // Optimized copy assignment
     MyVector& operator=(const MyVector& other){
@@ -155,8 +155,6 @@ private:
     T* data = nullptr;
     size_t size{};
     size_t capacity{};
-
-
 };
 
 
