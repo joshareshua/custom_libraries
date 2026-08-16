@@ -10,7 +10,11 @@ template<typename T>
 class MyVector{
 public:
     ~MyVector(){
-        delete[] data;
+        for (size_t i{}; i < size; ++i){
+           data[i].~T();
+        }
+
+        delete[] data; //free memory back to OS/pool
     }
 
     size_t getSize(){
@@ -24,6 +28,11 @@ public:
     size_t getCapacity(){
         return capacity;
     }
+
+    //default constructor tbd...
+
+
+    //size based constructor tbd...
     
     // Copy constructor for MyVector a = b where a = *this and b = other;
     MyVector(const MyVector& other){
@@ -105,18 +114,6 @@ public:
         other.capacity = 0;
 
         return *this;
-    }
-
-    //initalizer list
-    MyVector(std::initializer_list<int> input){
-        size = input.size();
-        capacity = size * 2;
-        data = new T[size];
-        
-        int index{};
-        for (const auto& e : input){
-            data[index++] = e;
-        }
     }
 
     //If T is not default constructible this will no compile
