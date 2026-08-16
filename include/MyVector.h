@@ -14,7 +14,7 @@ public:
            data[i].~T();
         }
 
-        delete[] data; //free memory back to OS/pool
+        free(data); //free memory back to OS/pool
     }
 
     size_t getSize(){
