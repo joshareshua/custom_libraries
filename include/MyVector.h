@@ -148,6 +148,18 @@ public:
     T& operator[](size_t index){ return data[index]; }
     const T& operator[](size_t index) const { return data[index]; }
 
+    void push_back(const T&){
+        //tbd...
+    }
+
+    void pop_back(){
+        //tbd....
+    }
+
+    void clear(){
+        //..tbd..
+    }
+
 private:
     T* data = nullptr;
     size_t size{};
