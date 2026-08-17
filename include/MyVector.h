@@ -165,7 +165,7 @@ public:
         size = 0;
     }
 
-    MyVector& front(){
+    T& front(){
         if (size == 0){
             throw std::out_of_range("MyVector::front called on empty vector");
         }
