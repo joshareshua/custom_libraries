@@ -3,13 +3,18 @@
 
 #include <cstddef>
 #include <initializer_list>
+#include <utility>
 
 
 template<typename T>
 class MyVector{
 public:
     ~MyVector(){
-        delete[] data;
+        for (size_t i{}; i < size; ++i){
+           data[i].~T();
+        }
+
+        free(data); //free memory back to OS/pool
     }
 
     size_t getSize(){
@@ -23,6 +28,11 @@ public:
     size_t getCapacity(){
         return capacity;
     }
+
+    //default constructor tbd...
+
+
+    //size based constructor tbd...
     
     // Copy constructor for MyVector a = b where a = *this and b = other;
     MyVector(const MyVector& other){
@@ -41,18 +51,39 @@ public:
         the object in call site of the function and any exceptions
         would happen here before the function body execution
         solving any data corruption issues 
-    */
+    
     MyVector& operator=(MyVector other){
-        swap(this->data, other.data);
-        swap(this->size, other.size);
-        swap(this->capacity, other.capacity);        
+        std::swap(this->data, other.data);
+        std::swap(this->size, other.size);
+        std::swap(this->capacity, other.capacity);        
 
         return *this;
-    }
+    }*/
 
     // Optimized copy assignment
     MyVector& operator=(const MyVector& other){
-        //tbd...
+        if (this == &other) return *this;
+
+        if (other.size <= capacity){
+            for (size_t i{}; i < size; ++i){
+                data[i] = other.data[i];
+            }
+            size = other.size;
+            return *this;
+            
+        } else {
+            T* newData = new T[other.capacity];
+            for (size_t i{}; i < size; ++i){
+                newData[i] = other.data[i];
+            }
+            delete[] data;
+            data = newData;
+            size = other.size;
+            capacity = other.capacity;
+
+
+        }
+        return *this;
     }
 
     
@@ -61,7 +92,7 @@ public:
         : data(other.data),
         capacity(other.capacity),
         size(other.size){
-            other.data = nullptr
+            other.data = nullptr;
             other.capacity = 0;
             other.size = 0;
         }
@@ -83,17 +114,6 @@ public:
         other.capacity = 0;
 
         return *this;
-    }
-
-    //initalizer list
-    MyVector(std::initializer_list<int> input){
-        size = input.size();
-        capacity = size * 2;
-        data = new T[size];
-
-        for (int i{}; i < size; ++i){
-            data[i] = input[i];
-        }
     }
 
     //If T is not default constructible this will no compile
@@ -123,19 +143,27 @@ public:
         return *this;
     }
 
-
-    size_t getSize(){ return size; }
     size_t getCapacty(){ return capacity; }
 
     T& operator[](size_t index){ return data[index]; }
     const T& operator[](size_t index) const { return data[index]; }
 
+    void push_back(const T&){
+        //tbd...
+    }
+
+    void pop_back(){
+        //tbd....
+    }
+
+    void clear(){
+        //..tbd..
+    }
+
 private:
     T* data = nullptr;
-    size_t size;
-    size_t capacity;
-
-
+    size_t size{};
+    size_t capacity{};
 };
 
 
