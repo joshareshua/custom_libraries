@@ -3,7 +3,7 @@
 
 #include <cstddef>
 #include <initializer_list>
-#include <utility>
+#include <stdexcept>
 
 
 template<typename T>
@@ -157,14 +157,28 @@ public:
     }
 
     void clear(){
-        //..tbd..
+        if (size == 0) return;
+        for (size_t i{}; i < size; ++i){
+            data[i].~MyVector();
+        }
+
+        size = 0;
     }
+
+    MyVector& front(){
+        if (size == 0){
+            throw std::out_of_range("MyVector::front called on empty vector");
+        }
+        return data[0];
+    }
+
 
 private:
     T* data = nullptr;
     size_t size{};
     size_t capacity{};
 };
+
 
 
 #endif
