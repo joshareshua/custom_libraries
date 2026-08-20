@@ -4,6 +4,8 @@
 #include <cstddef>
 #include <initializer_list>
 #include <stdexcept>
+#include <memory>
+#include<new>
 
 
 template<typename T>
@@ -11,10 +13,10 @@ class MyVector{
 public:
     ~MyVector(){
         for (size_t i{}; i < size; ++i){
-           data[i].~T();
+           std::destroy_at(data + i);
         }
 
-        free(data); //free memory back to OS/pool
+        ::operator delete(data); //free memory back to OS/pool
     }
 
     size_t getSize(){
