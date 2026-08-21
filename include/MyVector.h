@@ -5,7 +5,7 @@
 #include <initializer_list>
 #include <stdexcept>
 #include <memory>
-#include<new>
+#include <new>
 
 
 template<typename T>
@@ -23,11 +23,19 @@ public:
         return size;
     }
 
+    size_t getSize() const {
+        return size;
+    }
+
     T* getData(){
         return data;
     }
 
     size_t getCapacity(){
+        return capacity;
+    }
+    
+    size_t getCapacity() const {
         return capacity;
     }
 
