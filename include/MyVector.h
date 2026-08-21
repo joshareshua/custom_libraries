@@ -45,13 +45,14 @@ public:
     //size based constructor tbd...
     
     // Copy constructor for MyVector a = b where a = *this and b = other;
-    MyVector(const MyVector& other){
-        capacity = other.capacity;
-        size = other.size;
-        data = new T[capacity];
+    MyVector(const MyVector& other) :
+        capacity(other.capacity),
+        size(other.size) {
+
+        data = static_cast<T*>(::operator new(capacity * sizeof(T)));
 
         for (size_t i{}; i < size; ++i){
-            data[i] = other.data[i];
+            std::construct_at(data + i, other.data[i]);
         }
     }
 
@@ -153,8 +154,6 @@ public:
         return *this;
     }
 
-    size_t getCapacty(){ return capacity; }
-    size_t getCapacity() const { return capacity;}
 
     T& operator[](size_t index){ return data[index]; }
     const T& operator[](size_t index) const { return data[index]; }
