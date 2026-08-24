@@ -83,10 +83,11 @@ public:
             return *this;
             
         } else {
-            T* newData = new T[other.capacity];
+            T* newData = static_cast<T*>(::operator new(capacity * sizeof(T)));
             for (size_t i{}; i < size; ++i){
-                newData[i] = other.data[i];
+                newData[i] = construct_at(data[i], other.data[i]);
             }
+            
             delete[] data;
             data = newData;
             size = other.size;
