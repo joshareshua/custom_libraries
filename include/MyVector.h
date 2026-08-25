@@ -136,20 +136,27 @@ public:
         
             data = static_cast<T*>(::operator new(sizeof(T) * capacity));
             for (int i{}; i < input.size(); ++i){
-                std::construct_at(data + i, input[i]);
+                construct_at(data + i, input[i]);
             }
     }
 
     //initalizer list assignment
     MyVector& operator=(std::initializer_list<T> input){
-        delete[] data;
+        
+        for (size_t i{}; i < size; ++i){
+            destroy_at(data + i);
+            
+        }
+        
+        ::operator delete(data);
+
         size = input.size();
         capacity = input.size() * 2;
-        data = new T[capacity];
+        data = static_cast<T*>(::operator new(sizeof(T) > capacity));
 
 
         for (size_t i{}; i < size; ++i){
-            data[i] = input[i];
+            construct_at(data + i, input[i]);
         }
 
         return *this;
