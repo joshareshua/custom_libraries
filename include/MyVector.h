@@ -87,7 +87,7 @@ public:
             for (size_t i{}; i < size; ++i){
                 newData[i] = construct_at(data[i], other.data[i]);
             }
-            
+
             delete[] data;
             data = newData;
             size = other.size;
@@ -134,9 +134,9 @@ public:
         : size(input.size())
         , capacity(input.size() * 2){
         
-            data = new T[capacity];
+            data = static_cast<T*>(::operator new(sizeof(T) * capacity));
             for (int i{}; i < input.size(); ++i){
-                data[i] = input[i];
+                std::construct_at(data + i, input[i]);
             }
     }
 
