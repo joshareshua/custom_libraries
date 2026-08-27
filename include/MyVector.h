@@ -8,7 +8,8 @@
 #include <new>
 
 
-template<typename T>
+template<typename T,
+    typename Allocator = std::allocator<T>>
 class MyVector{
 public:
     ~MyVector(){
@@ -19,12 +20,9 @@ public:
         ::operator delete(data); //free memory back to OS/pool
     }
 
-    size_t getSize(){
-        return size;
-    }
-
-    size_t getSize() const {
-        return size;
+    template <typename Self>
+    size_t getSize(this Self&& self){
+        return self.size;
     }
 
     T* getData(){
@@ -141,6 +139,8 @@ public:
     }
 
     //initalizer list assignment
+    //need to improve for better exception guarantee
+    //need to reallocate if capacity not enough
     MyVector& operator=(std::initializer_list<T> input){
         
         for (size_t i{}; i < size; ++i){
@@ -152,7 +152,7 @@ public:
 
         size = input.size();
         capacity = input.size() * 2;
-        data = static_cast<T*>(::operator new(sizeof(T) > capacity));
+        data = static_cast<T*>(::operator new(sizeof(T) * capacity));
 
 
         for (size_t i{}; i < size; ++i){
@@ -177,7 +177,7 @@ public:
     void clear(){
         if (size == 0) return;
         for (size_t i{}; i < size; ++i){
-            data[i].~MyVector();
+            destroy_at(data + i);
         }
 
         size = 0;
