@@ -20,22 +20,23 @@ public:
         ::operator delete(data); //free memory back to OS/pool
     }
 
+    //C++23 deducing this to reduce code bloat
     template <typename Self>
     size_t getSize(this Self&& self){
         return self.size;
     }
 
-    T* getData(){
-        return data;
-    }
-
-    size_t getCapacity(){
-        return capacity;
-    }
     
-    size_t getCapacity() const {
-        return capacity;
+    T* getData() {return data;}
+    
+    const T* getData() const{return data;}
+
+
+    template <typename Self>
+    size_t getCapacity(this Self&& self){
+        return self.capacity;
     }
+     
 
     //default constructor tbd...
 
