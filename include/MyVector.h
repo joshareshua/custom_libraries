@@ -28,7 +28,7 @@ public:
 
     
     T* getData() {return data;}
-    
+
     const T* getData() const{return data;}
 
 
@@ -172,7 +172,9 @@ public:
     }
 
     void pop_back(){
-        //tbd....
+        if (size == 0) return;
+        std::destroy_at(data + size - 1);
+        --size;
     }
 
     void clear(){
