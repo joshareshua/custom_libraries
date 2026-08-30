@@ -12,7 +12,7 @@ template<typename T,
     typename Allocator = std::allocator<T>>
 class MyVector{
 public:
-    ~MyVector(){
+    ~MyVector () noexcept {
         for (size_t i{}; i < size; ++i){
            std::destroy_at(data + i);
         }
@@ -37,6 +37,8 @@ public:
         return self.capacity;
     }
      
+    
+    T* begin(){return data;}
 
     //default constructor tbd...
 
