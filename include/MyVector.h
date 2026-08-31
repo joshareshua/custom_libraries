@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <memory>
 #include <new>
+#include <optional>
 
 
 template<typename T,
@@ -30,6 +31,12 @@ public:
     T* getData() {return data;}
 
     const T* getData() const{return data;}
+
+    std::optional<T&> at(size_t index){
+        if (index >= size) return std::nullopt;
+
+        return data[index];
+    }
 
 
     template <typename Self>
