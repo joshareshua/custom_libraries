@@ -176,7 +176,16 @@ public:
     T& operator[](size_t index){ return data[index]; }
     const T& operator[](size_t index) const { return data[index]; }
 
-    void push_back(const T&){
+    void push_back(const T& value){
+        if (size == capacity){
+            reserve(capacity == 0? 1: capacity);
+
+        }
+        construct_at(data + size, value);
+        ++size;
+    }
+
+    void reserve(){
         //tbd...
     }
 
