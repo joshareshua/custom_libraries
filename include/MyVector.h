@@ -38,6 +38,8 @@ public:
         return data[index];
     }
 
+    bool empty() const { return size == 0; }
+
 
     template <typename Self>
     size_t getCapacity(this Self&& self){
