@@ -217,6 +217,13 @@ public:
         return data[0];
     }
 
+    std::optional<T&> back(){
+        if (size == 0){
+            return std::nullopt;
+        }
+        return data[size-1];
+    }
+
 
 private:
     T* data = nullptr;
