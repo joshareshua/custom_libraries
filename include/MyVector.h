@@ -217,9 +217,9 @@ public:
         return data[0];
     }
 
-    std::optional<T&> back(){
+    T& back(){
         if (size == 0){
-            return std::nullopt;
+            throw std::runtime_error("No valid elements exist.");
         }
         return data[size-1];
     }
