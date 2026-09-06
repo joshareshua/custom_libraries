@@ -212,14 +212,20 @@ public:
 
     T& front(){
         if (size == 0){
-            throw std::out_of_range("MyVector::front called on empty vector");
+            throw std::out_of_range("MyVector::front called on empty vector.\n");
         }
         return data[0];
     }
 
+    const T& front() const {
+        if (size == 0){
+            throw std::out_of_range("MyVector::front called on empty vector.\n")
+        }
+    }
+
     T& back(){
         if (size == 0){
-            throw std::runtime_error("No valid elements exist.");
+            throw std::runtime_error("No valid elements exist.\n");
         }
         return data[size-1];
     }
