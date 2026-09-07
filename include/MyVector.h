@@ -219,13 +219,20 @@ public:
 
     const T& front() const {
         if (size == 0){
-            throw std::out_of_range("MyVector::front called on empty vector.\n")
+            throw std::out_of_range("MyVector::front called on empty vector.\n");
         }
     }
 
     T& back(){
         if (size == 0){
-            throw std::runtime_error("No valid elements exist.\n");
+            throw std::out_of_range("No valid elements exist.\n");
+        }
+        return data[size-1];
+    }
+
+    const T& back() const {
+        if (size == 0){
+            throw std::out_of_range("No valid elements exist.\n");
         }
         return data[size-1];
     }
