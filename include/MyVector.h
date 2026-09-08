@@ -184,15 +184,32 @@ public:
 
     void push_back(const T& value){
         if (size == capacity){
-            reserve(capacity == 0? 1: capacity);
+            reserve(capacity == 0? 1: capacity * 2);
 
         }
         construct_at(data + size, value);
         ++size;
     }
 
-    void reserve(){
-        //tbd...
+    void reserve(size_t newCap){
+        if (newCap == capacity) return;
+
+        T* temp = static_cast<T*>(
+            ::operator new(newCap * sizeof(T)));
+
+        for (int i{}; i < size; ++i){
+            construct_at(temp + i, move(data[i]));
+        }
+
+        swap(temp, data);
+        capacity = newCap;
+        
+        for (int i{}; i < size; ++i){
+            destroy_at(temp + i);
+        }
+
+        ::operator delete(temp);
+        
     }
 
     void pop_back(){
