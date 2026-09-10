@@ -5,8 +5,9 @@
 #include <initializer_list>
 #include <stdexcept>
 #include <memory>
-#include <new>
 #include <optional>
+#include <utility>
+#include <new>
 
 
 template<typename T,
@@ -14,7 +15,7 @@ template<typename T,
 class MyVector{
 public:
     ~MyVector () noexcept {
-        for (size_t i{}; i < size; ++i){
+        for (std::size_t i{}; i < size; ++i){
            std::destroy_at(data + i);
         }
 
@@ -23,7 +24,7 @@ public:
 
     //C++23 deducing this to reduce code bloat
     template <typename Self>
-    size_t getSize(this Self&& self){
+    std::size_t getSize(this Self&& self){
         return self.size;
     }
 
@@ -32,20 +33,26 @@ public:
 
     const T* getData() const{return data;}
 
-    std::optional<T&> at(size_t index){
+    std::optional<T&> at(std::size_t index){
         if (index >= size) return std::nullopt;
 
         return data[index];
     }
 
+    bool empty() const { return size == 0; }
+
 
     template <typename Self>
-    size_t getCapacity(this Self&& self){
+    std::size_t getCapacity(this Self&& self){
         return self.capacity;
     }
      
     
     T* begin(){return data;}
+    const T* begin() const {return data;} 
+
+    T* end() { return data + size;}
+    const T* end() const {return data + size;}
 
     //default constructor tbd...
 
@@ -59,7 +66,7 @@ public:
 
         data = static_cast<T*>(::operator new(capacity * sizeof(T)));
 
-        for (size_t i{}; i < size; ++i){
+        for (std::size_t i{}; i < size; ++i){
             std::construct_at(data + i, other.data[i]);
         }
     }
@@ -84,19 +91,28 @@ public:
         if (this == &other) return *this;
 
         if (other.size <= capacity){
-            for (size_t i{}; i < size; ++i){
+            for (std::size_t i{}; i < size; ++i){
                 data[i] = other.data[i];
             }
             size = other.size;
             return *this;
             
         } else {
-            T* newData = static_cast<T*>(::operator new(capacity * sizeof(T)));
-            for (size_t i{}; i < size; ++i){
-                newData[i] = construct_at(data[i], other.data[i]);
-            }
+            
 
-            delete[] data;
+            //construct the new temporary objects for strong exception safety
+            T* newData = static_cast<T*>(::operator new(other.capacity * sizeof(T)));
+            for (std::size_t i{}; i < other.size; ++i){
+                std::construct_at(newData + i, other.data[i]);
+            }
+            
+            //destroy and deallocate old objects
+            for (std::size_t i{}; i < size; ++i){
+                destroy_at(data + i);
+            }
+            ::operator delete(data);
+
+            // reassign ownership resources
             data = newData;
             size = other.size;
             capacity = other.capacity;
@@ -122,9 +138,15 @@ public:
     // Move assignment for a = b
     MyVector& operator=(MyVector&& other) noexcept{
         if (&other == this) return *this;
+        
+        //destroy old objects and deallocate old memory
+        for (size_t i{}; i < size; ++i){
+            std::destroy_at(data + i);
+        }
+        ::operator delete(data);
 
-        delete[] data;
-
+        //switch ownership/resources 
+        // and leave object switched from in valid state
         size = other.size;
         capacity = other.capacity;
         data = other.data;
@@ -144,7 +166,7 @@ public:
         
             data = static_cast<T*>(::operator new(sizeof(T) * capacity));
             for (int i{}; i < input.size(); ++i){
-                construct_at(data + i, input[i]);
+                std::construct_at(data + i, input[i]);
             }
     }
 
@@ -153,8 +175,8 @@ public:
     //need to reallocate if capacity not enough
     MyVector& operator=(std::initializer_list<T> input){
         
-        for (size_t i{}; i < size; ++i){
-            destroy_at(data + i);
+        for (std::size_t i{}; i < size; ++i){
+            std::destroy_at(data + i);
             
         }
         
@@ -165,28 +187,45 @@ public:
         data = static_cast<T*>(::operator new(sizeof(T) * capacity));
 
 
-        for (size_t i{}; i < size; ++i){
-            construct_at(data + i, input[i]);
+        for (std::size_t i{}; i < size; ++i){
+            std::construct_at(data + i, input[i]);
         }
 
         return *this;
     }
 
 
-    T& operator[](size_t index){ return data[index]; }
-    const T& operator[](size_t index) const { return data[index]; }
+    T& operator[](std::size_t index){ return data[index]; }
+    const T& operator[](std::size_t index) const { return data[index]; }
 
     void push_back(const T& value){
         if (size == capacity){
-            reserve(capacity == 0? 1: capacity);
+            reserve(capacity == 0? 1: capacity * 2);
 
         }
-        construct_at(data + size, value);
+        std::construct_at(data + size, value);
         ++size;
     }
 
-    void reserve(){
-        //tbd...
+    void reserve(std::size_t newCap){
+        if (newCap == capacity) return;
+
+        T* temp = static_cast<T*>(
+            ::operator new(newCap * sizeof(T)));
+
+        for (int i{}; i < size; ++i){
+            std::construct_at(temp + i, std::move(data[i]));
+        }
+
+        std::swap(temp, data);
+        capacity = newCap;
+        
+        for (int i{}; i < size; ++i){
+            std::destroy_at(temp + i);
+        }
+
+        ::operator delete(temp);
+        
     }
 
     void pop_back(){
@@ -197,8 +236,8 @@ public:
 
     void clear(){
         if (size == 0) return;
-        for (size_t i{}; i < size; ++i){
-            destroy_at(data + i);
+        for (std::size_t i{}; i < size; ++i){
+            std::destroy_at(data + i);
         }
 
         size = 0;
@@ -206,16 +245,36 @@ public:
 
     T& front(){
         if (size == 0){
-            throw std::out_of_range("MyVector::front called on empty vector");
+            throw std::out_of_range("MyVector::front called on empty vector.\n");
         }
         return data[0];
+    }
+
+    const T& front() const {
+        if (size == 0){
+            throw std::out_of_range("MyVector::front called on empty vector.\n");
+        }
+    }
+
+    T& back(){
+        if (size == 0){
+            throw std::out_of_range("No valid elements exist.\n");
+        }
+        return data[size-1];
+    }
+
+    const T& back() const {
+        if (size == 0){
+            throw std::out_of_range("No valid elements exist.\n");
+        }
+        return data[size-1];
     }
 
 
 private:
     T* data = nullptr;
-    size_t size{};
-    size_t capacity{};
+    std::size_t size{};
+    std::size_t capacity{};
 };
 
 
