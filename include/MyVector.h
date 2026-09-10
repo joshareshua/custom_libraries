@@ -5,9 +5,9 @@
 #include <initializer_list>
 #include <stdexcept>
 #include <memory>
-#include <new>
 #include <optional>
 #include <utility>
+#include <new>
 
 
 template<typename T,
@@ -98,12 +98,21 @@ public:
             return *this;
             
         } else {
+            
+
+            //construct the new temporary objects for strong exception safety
             T* newData = static_cast<T*>(::operator new(other.capacity * sizeof(T)));
             for (std::size_t i{}; i < other.size; ++i){
                 std::construct_at(newData + i, other.data[i]);
             }
+            
+            //destroy and deallocate old objects
+            for (std::size_t i{}; i < size; ++i){
+                destroy_at(data + i);
+            }
+            ::operator delete(data);
 
-            delete[] data;
+            // reassign ownership resources
             data = newData;
             size = other.size;
             capacity = other.capacity;
@@ -129,9 +138,15 @@ public:
     // Move assignment for a = b
     MyVector& operator=(MyVector&& other) noexcept{
         if (&other == this) return *this;
+        
+        //destroy old objects and deallocate old memory
+        for (size_t i{}; i < size; ++i){
+            std::destroy_at(data + i);
+        }
+        ::operator delete(data);
 
-        delete[] data;
-
+        //switch ownership/resources 
+        // and leave object switched from in valid state
         size = other.size;
         capacity = other.capacity;
         data = other.data;
