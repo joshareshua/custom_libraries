@@ -208,6 +208,8 @@ public:
     }
 
     void reserve(std::size_t newCap){
+        if (newCap <= capacity) return;
+        
         if (newCap == capacity) return;
 
         T* temp = static_cast<T*>(
