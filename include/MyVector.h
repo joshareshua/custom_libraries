@@ -256,6 +256,7 @@ public:
         if (size == 0){
             throw std::out_of_range("MyVector::front called on empty vector.\n");
         }
+        return data[0];
     }
 
     T& back(){
