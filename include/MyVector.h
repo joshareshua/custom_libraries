@@ -33,10 +33,14 @@ public:
 
     const T* getData() const{return data;}
 
-    std::optional<T&> at(std::size_t index){
-        if (index >= size) return std::nullopt;
+    T* at(std::size_t index){
+        if (index >= size) return nullptr;
 
         return data[index];
+    }
+
+    T& try_at(size_t index) noexcept{
+        //tbd...
     }
 
     bool empty() const { return size == 0; }
