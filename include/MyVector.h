@@ -39,7 +39,15 @@ public:
         return data[index];
     }
 
+    const T* at(size_t index) const{
+        //tbd...
+    }
+
     T& try_at(size_t index) noexcept{
+        //tbd...
+    }
+
+    const T& try_at(size_t index) const noexcept {
         //tbd...
     }
 
