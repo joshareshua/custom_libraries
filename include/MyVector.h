@@ -44,7 +44,7 @@ public:
     }
 
     T& try_at(size_t index) noexcept{
-        //tbd...
+        return index < size? data + index : nullptr;
     }
 
     const T& try_at(size_t index) const noexcept {
