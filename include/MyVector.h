@@ -38,7 +38,8 @@ public:
     }
 
     const T* at(size_t index) const{
-        //tbd...
+        return index < size? data + index
+                        : throw std::out_of_range("Index out of bounds");
     }
 
     T* try_at(size_t index) noexcept{
