@@ -34,21 +34,19 @@ public:
     const T* getData() const{return data;}
 
     T* at(std::size_t index){
-        if (index >= size) return nullptr;
-
-        return data[index];
+        return index < size? data + index: throw std::out_of_range("Index out of bounds\n");
     }
 
     const T* at(size_t index) const{
         //tbd...
     }
 
-    T& try_at(size_t index) noexcept{
+    T* try_at(size_t index) noexcept{
         return index < size? data + index : nullptr;
     }
 
-    const T& try_at(size_t index) const noexcept {
-        //tbd...
+    const T* try_at(size_t index) const noexcept {
+        return index < size? data + index : nullptr;
     }
 
     bool empty() const { return size == 0; }
