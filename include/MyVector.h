@@ -8,6 +8,7 @@
 #include <optional>
 #include <utility>
 #include <new>
+#include<iostream>
 
 
 template<typename T,
@@ -69,6 +70,26 @@ public:
 
 
     //size based constructor tbd...
+    MyVector(std::size_t inputSize) : size(inputSize), capacity(inputSize){
+        size_t constructed{};
+        try{
+            data = static_cast<T*>(::operator new(capacity * sizeof(T)));
+            for (; constructed < size; ++constructed){
+                std::construct_at(data + constructed);
+            }
+        } catch(...){
+            
+            while (constructed > 0){
+                std::destroy_at(data + --constructed);
+            
+            }
+            ::operator delete(data);
+            data = nullptr;
+            size = 0;
+            capacity = 0;
+            throw;
+        }
+    }
     
     // Copy constructor for MyVector a = b where a = *this and b = other;
     MyVector(const MyVector& other) :
