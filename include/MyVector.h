@@ -23,6 +23,9 @@ public:
         ::operator delete(data); //free memory back to OS/pool
     }
 
+    //default constructor
+    MyVector() noexcept = default;
+
     //C++23 deducing this to reduce code bloat
     template <typename Self>
     std::size_t getSize(this Self&& self){
@@ -66,12 +69,12 @@ public:
     T* end() { return data + size;}
     const T* end() const {return data + size;}
 
-    //default constructor tbd...
-
 
     //size based constructor tbd...
     MyVector(std::size_t inputSize) : size(inputSize), capacity(inputSize){
         size_t constructed{};
+
+        //use temporary constructoin + commit tbd...
         try{
             data = static_cast<T*>(::operator new(capacity * sizeof(T)));
             for (; constructed < size; ++constructed){
