@@ -127,36 +127,15 @@ public:
     MyVector& operator=(const MyVector& other){
         if (this == &other) return *this;
 
-        if (other.size <= capacity){
-            for (std::size_t i{}; i < size; ++i){
-                data[i] = other.data[i];
-            }
-            size = other.size;
-            return *this;
-            
-        } else {
-            
-
-            //construct the new temporary objects for strong exception safety
-            T* newData = static_cast<T*>(::operator new(other.capacity * sizeof(T)));
-            for (std::size_t i{}; i < other.size; ++i){
-                std::construct_at(newData + i, other.data[i]);
-            }
-            
-            //destroy and deallocate old objects
-            for (std::size_t i{}; i < size; ++i){
-                destroy_at(data + i);
-            }
-            ::operator delete(data);
-
-            // reassign ownership resources
-            data = newData;
-            size = other.size;
-            capacity = other.capacity;
-
-
-        }
+        MyVector tmp(other);
+        swap(tmp);
         return *this;
+    }
+
+    void swap(MyVector& other) noexcept{
+        std::swap(data, other.data);
+        std::swap(size, other.size);
+        std::swap(capacity, other.capacity);
     }
 
     
