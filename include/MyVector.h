@@ -120,7 +120,9 @@ public:
 
         return *this;
     }*/
+    
 
+    // Need to revise copy assignment for strong exception guarantee
     // Optimized copy assignment
     MyVector& operator=(const MyVector& other){
         if (this == &other) return *this;
