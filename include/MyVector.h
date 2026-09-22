@@ -98,11 +98,21 @@ public:
     MyVector(const MyVector& other) :
         capacity(other.capacity),
         size(other.size) {
+        
+        std::size_t constructed{};
+        try{
+            data = static_cast<T*>(::operator new(capacity * sizeof(T)));
 
-        data = static_cast<T*>(::operator new(capacity * sizeof(T)));
+            for (; constructed < size; ++constructed){
+                std::construct_at(data + constructed, other.data[constructed]);
+            }
+        } catch (...){
+            while (constructed > 0){
+                std::destroy_at(data + --constructed);
+            }
 
-        for (std::size_t i{}; i < size; ++i){
-            std::construct_at(data + i, other.data[i]);
+            ::operator delete(data);
+            throw;
         }
     }
 
