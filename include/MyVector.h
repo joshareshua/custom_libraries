@@ -189,10 +189,19 @@ public:
     MyVector(std::initializer_list<T> input) 
         : size(input.size())
         , capacity(input.size() * 2){
-        
-            data = static_cast<T*>(::operator new(sizeof(T) * capacity));
-            for (int i{}; i < input.size(); ++i){
-                std::construct_at(data + i, input[i]);
+            
+            size_t constructed{};
+            try{
+                data = static_cast<T*>(::operator new(sizeof(T) * capacity));
+                for (; constructed < input.size(); ++constructed){
+                    std::construct_at(data + constructed, input[constructed]);
+                }
+            } catch(...){
+                while (constructed > 0){
+                    std::destroy_at(data + --constructed);
+                }
+                ::operator delete(data);
+                throw;
             }
     }
 
