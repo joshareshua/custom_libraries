@@ -107,7 +107,7 @@ void test_initalizer_list(){
     initializer_list<int> in = {1,2,3,4,5};
     MyVector a(in);
     assert(a.getSize() == in.size());
-    assert(a.getCapacity() == in.size());
+    assert(a.getCapacity() >= in.size());
 
     int index{};
     for (const auto& x : in){

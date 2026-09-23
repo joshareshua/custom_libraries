@@ -8,6 +8,7 @@
 #include <optional>
 #include <utility>
 #include <new>
+#include<iostream>
 
 
 template<typename T,
@@ -22,6 +23,9 @@ public:
         ::operator delete(data); //free memory back to OS/pool
     }
 
+    //default constructor
+    MyVector() noexcept = default;
+
     //C++23 deducing this to reduce code bloat
     template <typename Self>
     std::size_t getSize(this Self&& self){
@@ -33,10 +37,21 @@ public:
 
     const T* getData() const{return data;}
 
-    std::optional<T&> at(std::size_t index){
-        if (index >= size) return std::nullopt;
+    T* at(std::size_t index){
+        return index < size? data + index: throw std::out_of_range("Index out of bounds\n");
+    }
 
-        return data[index];
+    const T* at(size_t index) const{
+        return index < size? data + index
+                        : throw std::out_of_range("Index out of bounds");
+    }
+
+    T* try_at(size_t index) noexcept{
+        return index < size? data + index : nullptr;
+    }
+
+    const T* try_at(size_t index) const noexcept {
+        return index < size? data + index : nullptr;
     }
 
     bool empty() const { return size == 0; }
@@ -54,20 +69,50 @@ public:
     T* end() { return data + size;}
     const T* end() const {return data + size;}
 
-    //default constructor tbd...
-
 
     //size based constructor tbd...
+    MyVector(std::size_t inputSize) : size(inputSize), capacity(inputSize){
+        size_t constructed{};
+
+        //use temporary constructoin + commit tbd...
+        try{
+            data = static_cast<T*>(::operator new(capacity * sizeof(T)));
+            for (; constructed < size; ++constructed){
+                std::construct_at(data + constructed);
+            }
+        } catch(...){
+            
+            while (constructed > 0){
+                std::destroy_at(data + --constructed);
+            
+            }
+            ::operator delete(data);
+            data = nullptr;
+            size = 0;
+            capacity = 0;
+            throw;
+        }
+    }
     
     // Copy constructor for MyVector a = b where a = *this and b = other;
     MyVector(const MyVector& other) :
         capacity(other.capacity),
         size(other.size) {
+        
+        std::size_t constructed{};
+        try{
+            data = static_cast<T*>(::operator new(capacity * sizeof(T)));
 
-        data = static_cast<T*>(::operator new(capacity * sizeof(T)));
+            for (; constructed < size; ++constructed){
+                std::construct_at(data + constructed, other.data[constructed]);
+            }
+        } catch (...){
+            while (constructed > 0){
+                std::destroy_at(data + --constructed);
+            }
 
-        for (std::size_t i{}; i < size; ++i){
-            std::construct_at(data + i, other.data[i]);
+            ::operator delete(data);
+            throw;
         }
     }
 
@@ -85,41 +130,22 @@ public:
 
         return *this;
     }*/
+    
 
+    // Need to revise copy assignment for strong exception guarantee
     // Optimized copy assignment
     MyVector& operator=(const MyVector& other){
         if (this == &other) return *this;
 
-        if (other.size <= capacity){
-            for (std::size_t i{}; i < size; ++i){
-                data[i] = other.data[i];
-            }
-            size = other.size;
-            return *this;
-            
-        } else {
-            
-
-            //construct the new temporary objects for strong exception safety
-            T* newData = static_cast<T*>(::operator new(other.capacity * sizeof(T)));
-            for (std::size_t i{}; i < other.size; ++i){
-                std::construct_at(newData + i, other.data[i]);
-            }
-            
-            //destroy and deallocate old objects
-            for (std::size_t i{}; i < size; ++i){
-                destroy_at(data + i);
-            }
-            ::operator delete(data);
-
-            // reassign ownership resources
-            data = newData;
-            size = other.size;
-            capacity = other.capacity;
-
-
-        }
+        MyVector tmp(other);
+        swap(tmp);
         return *this;
+    }
+
+    void swap(MyVector& other) noexcept{
+        std::swap(data, other.data);
+        std::swap(size, other.size);
+        std::swap(capacity, other.capacity);
     }
 
     
@@ -163,10 +189,19 @@ public:
     MyVector(std::initializer_list<T> input) 
         : size(input.size())
         , capacity(input.size() * 2){
-        
-            data = static_cast<T*>(::operator new(sizeof(T) * capacity));
-            for (int i{}; i < input.size(); ++i){
-                std::construct_at(data + i, input[i]);
+            
+            size_t constructed{};
+            try{
+                data = static_cast<T*>(::operator new(sizeof(T) * capacity));
+                for (; constructed < input.size(); ++constructed){
+                    std::construct_at(data + constructed, input[constructed]);
+                }
+            } catch(...){
+                while (constructed > 0){
+                    std::destroy_at(data + --constructed);
+                }
+                ::operator delete(data);
+                throw;
             }
     }
 
@@ -208,6 +243,8 @@ public:
     }
 
     void reserve(std::size_t newCap){
+        if (newCap <= capacity) return;
+        
         if (newCap == capacity) return;
 
         T* temp = static_cast<T*>(
@@ -254,6 +291,7 @@ public:
         if (size == 0){
             throw std::out_of_range("MyVector::front called on empty vector.\n");
         }
+        return data[0];
     }
 
     T& back(){
