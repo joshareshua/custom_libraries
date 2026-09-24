@@ -208,23 +208,9 @@ public:
     //initalizer list assignment
     //need to improve for better exception guarantee
     //need to reallocate if capacity not enough
-    MyVector& operator=(std::initializer_list<T> input){
-        
-        for (std::size_t i{}; i < size; ++i){
-            std::destroy_at(data + i);
-            
-        }
-        
-        ::operator delete(data);
-
-        size = input.size();
-        capacity = input.size() * 2;
-        data = static_cast<T*>(::operator new(sizeof(T) * capacity));
-
-
-        for (std::size_t i{}; i < size; ++i){
-            std::construct_at(data + i, input[i]);
-        }
+    MyVector& operator=(std::initializer_list<T> input){  
+        MyVector temp(input);
+        swap(temp);
 
         return *this;
     }
