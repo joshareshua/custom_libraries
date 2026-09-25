@@ -9,10 +9,17 @@
 #include <utility>
 #include <new>
 #include<iostream>
+#include <limits>
+#include <type_traits>
 
+template<typename T>
+concept SafeVectorElement = 
+std::is_nothrow_move_constructible_v<T> ||
+    std::is_copy_constructible_v<T>;
 
 template<typename T,
     typename Allocator = std::allocator<T>>
+requires SafeVectorElement<T>
 class MyVector{
 public:
     ~MyVector () noexcept {
@@ -231,19 +238,28 @@ public:
     void reserve(std::size_t newCap){
         if (newCap <= capacity) return;
         
-        if (newCap == capacity) return;
-
         T* temp = static_cast<T*>(
             ::operator new(newCap * sizeof(T)));
 
-        for (int i{}; i < size; ++i){
-            std::construct_at(temp + i, std::move(data[i]));
+        std::size_t constructed{};
+
+        try{
+            for (; constructed < size; ++constructed){
+                std::construct_at(temp + constructed
+                    , std::move_if_noexcept(data[constructed]));
+            }
+        }catch(...){
+            while(constructed > 0){
+                std::destroy_at(temp + --constructed);
+            }
+            ::operator delete(temp);
+            throw;
         }
 
         std::swap(temp, data);
         capacity = newCap;
         
-        for (int i{}; i < size; ++i){
+        for (size_t i{}; i < size; ++i){
             std::destroy_at(temp + i);
         }
 
