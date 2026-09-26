@@ -195,13 +195,13 @@ public:
     // Need to alocate and construct elements manually
     MyVector(std::initializer_list<T> input) 
         : size(input.size())
-        , capacity(input.size() * 2){
+        , capacity(input.size()){
             
             size_t constructed{};
             try{
                 data = static_cast<T*>(::operator new(sizeof(T) * capacity));
                 for (; constructed < input.size(); ++constructed){
-                    std::construct_at(data + constructed, input[constructed]);
+                    std::construct_at(data + constructed, input.begin()[constructed]);
                 }
             } catch(...){
                 while (constructed > 0){
@@ -226,9 +226,11 @@ public:
     T& operator[](std::size_t index){ return data[index]; }
     const T& operator[](std::size_t index) const { return data[index]; }
 
-    void push_back(const T& value){
+    void push_back(const T& value){ 
         if (size == capacity){
+            T temp(value);
             reserve(capacity == 0? 1: capacity * 2);
+            std::construct_at(data + size, move_if_noexcept(temp));;
 
         }
         std::construct_at(data + size, value);
