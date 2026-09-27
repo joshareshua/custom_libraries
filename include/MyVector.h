@@ -73,13 +73,16 @@ public:
     T* begin(){return data;}
     const T* begin() const {return data;} 
 
-    T* end() { return data + size;}
-    const T* end() const {return data + size;}
+    T* end() { return size == 0? data: data + size;}
+    const T* end() const {return size == 0? data : data + size;}
 
-
-    //size based constructor tbd...
+    //Size-based constructor
     MyVector(std::size_t inputSize) : size(inputSize), capacity(inputSize){
         size_t constructed{};
+        
+        if (inputSize > std::numeric_limits<size_t>::max()){
+            throw std::length_error("No more space in MyVector.");
+        }
 
         //use temporary constructoin + commit tbd...
         try{
@@ -239,6 +242,11 @@ public:
 
     void reserve(std::size_t newCap){
         if (newCap <= capacity) return;
+
+        
+        if (newCap > std::numeric_limits<size_t>::max()){
+            throw std::length_error("Not enough space in MyVector.");
+        }
         
         T* temp = static_cast<T*>(
             ::operator new(newCap * sizeof(T)));
