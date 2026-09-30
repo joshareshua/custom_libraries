@@ -233,10 +233,12 @@ public:
         if (size == capacity){
             T temp(value);
             reserve(capacity == 0? 1: capacity * 2);
-            std::construct_at(data + size, move_if_noexcept(temp));;
+            std::construct_at(data + size, std::move_if_noexcept(temp));;
 
         }
-        std::construct_at(data + size, value);
+        else{
+            std::construct_at(data + size, value);
+        }
         ++size;
     }
 
