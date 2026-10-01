@@ -80,7 +80,7 @@ public:
     MyVector(std::size_t inputSize) : size(inputSize), capacity(inputSize){
         size_t constructed{};
         
-        if (inputSize > std::numeric_limits<size_t>::max()){
+        if (inputSize > std::numeric_limits<size_t>::max()/sizeof(T)){
             throw std::length_error("No more space in MyVector.");
         }
 
@@ -108,6 +108,9 @@ public:
     MyVector(const MyVector& other) :
         capacity(other.capacity),
         size(other.size) {
+        if (capacity > std::numeric_limits<size_t>::max()/sizeof(T)){
+            throw std::length_error("No more space in MyVector.");
+        }
         
         std::size_t constructed{};
         try{
@@ -200,6 +203,9 @@ public:
         : size(input.size())
         , capacity(input.size()){
             
+            if (capacity > std::numeric_limits<size_t>::max()/sizeof(T)){
+                throw std::length_error("No more space in MyVector.");
+            }
             size_t constructed{};
             try{
                 data = static_cast<T*>(::operator new(sizeof(T) * capacity));
@@ -230,6 +236,10 @@ public:
     const T& operator[](std::size_t index) const { return data[index]; }
 
     void push_back(const T& value){ 
+        const std::size_t max_count = std::numeric_limits<size_t>::max()/sizeof(T);
+        if (capacity > max_count/2){
+            throw std::length_error("No more space in MyVector.");
+        }
         if (size == capacity){
             T temp(value);
             reserve(capacity == 0? 1: capacity * 2);
@@ -246,7 +256,7 @@ public:
         if (newCap <= capacity) return;
 
         
-        if (newCap > std::numeric_limits<size_t>::max()){
+        if (newCap > std::numeric_limits<size_t>::max()/sizeof(T)){
             throw std::length_error("Not enough space in MyVector.");
         }
         
