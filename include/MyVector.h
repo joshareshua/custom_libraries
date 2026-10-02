@@ -5,14 +5,20 @@
 #include <initializer_list>
 #include <stdexcept>
 #include <memory>
-#include <optional>
 #include <utility>
 #include <new>
 #include<iostream>
+#include <limits>
+#include <type_traits>
 
+template<typename T>
+concept SafeVectorElement = 
+std::is_nothrow_move_constructible_v<T> ||
+    std::is_copy_constructible_v<T>;
 
 template<typename T,
     typename Allocator = std::allocator<T>>
+requires SafeVectorElement<T>
 class MyVector{
 public:
     ~MyVector () noexcept {
@@ -41,16 +47,16 @@ public:
         return index < size? data + index: throw std::out_of_range("Index out of bounds\n");
     }
 
-    const T* at(size_t index) const{
+    const T* at(std::size_t index) const{
         return index < size? data + index
                         : throw std::out_of_range("Index out of bounds");
     }
 
-    T* try_at(size_t index) noexcept{
+    T* try_at(std::size_t index) noexcept{
         return index < size? data + index : nullptr;
     }
 
-    const T* try_at(size_t index) const noexcept {
+    const T* try_at(std::size_t index) const noexcept {
         return index < size? data + index : nullptr;
     }
 
@@ -66,13 +72,16 @@ public:
     T* begin(){return data;}
     const T* begin() const {return data;} 
 
-    T* end() { return data + size;}
-    const T* end() const {return data + size;}
+    T* end() { return size == 0? data: data + size;}
+    const T* end() const {return size == 0? data : data + size;}
 
-
-    //size based constructor tbd...
+    //Size-based constructor
     MyVector(std::size_t inputSize) : size(inputSize), capacity(inputSize){
-        size_t constructed{};
+        std::size_t constructed{};
+        
+        if (inputSize > std::numeric_limits<std::size_t>::max()/sizeof(T)){
+            throw std::length_error("No more space in MyVector.");
+        }
 
         //use temporary constructoin + commit tbd...
         try{
@@ -98,6 +107,9 @@ public:
     MyVector(const MyVector& other) :
         capacity(other.capacity),
         size(other.size) {
+        if (capacity > std::numeric_limits<std::size_t>::max()/sizeof(T)){
+            throw std::length_error("No more space in MyVector.");
+        }
         
         std::size_t constructed{};
         try{
@@ -166,7 +178,7 @@ public:
         if (&other == this) return *this;
         
         //destroy old objects and deallocate old memory
-        for (size_t i{}; i < size; ++i){
+        for (std::size_t i{}; i < size; ++i){
             std::destroy_at(data + i);
         }
         ::operator delete(data);
@@ -188,13 +200,16 @@ public:
     // Need to alocate and construct elements manually
     MyVector(std::initializer_list<T> input) 
         : size(input.size())
-        , capacity(input.size() * 2){
+        , capacity(input.size()){
             
-            size_t constructed{};
+            if (capacity > std::numeric_limits<std::size_t>::max()/sizeof(T)){
+                throw std::length_error("No more space in MyVector.");
+            }
+            std::size_t constructed{};
             try{
                 data = static_cast<T*>(::operator new(sizeof(T) * capacity));
                 for (; constructed < input.size(); ++constructed){
-                    std::construct_at(data + constructed, input[constructed]);
+                    std::construct_at(data + constructed, input.begin()[constructed]);
                 }
             } catch(...){
                 while (constructed > 0){
@@ -208,23 +223,9 @@ public:
     //initalizer list assignment
     //need to improve for better exception guarantee
     //need to reallocate if capacity not enough
-    MyVector& operator=(std::initializer_list<T> input){
-        
-        for (std::size_t i{}; i < size; ++i){
-            std::destroy_at(data + i);
-            
-        }
-        
-        ::operator delete(data);
-
-        size = input.size();
-        capacity = input.size() * 2;
-        data = static_cast<T*>(::operator new(sizeof(T) * capacity));
-
-
-        for (std::size_t i{}; i < size; ++i){
-            std::construct_at(data + i, input[i]);
-        }
+    MyVector& operator=(std::initializer_list<T> input){  
+        MyVector temp(input);
+        swap(temp);
 
         return *this;
     }
@@ -233,31 +234,53 @@ public:
     T& operator[](std::size_t index){ return data[index]; }
     const T& operator[](std::size_t index) const { return data[index]; }
 
-    void push_back(const T& value){
+    void push_back(const T& value){ 
+        const std::size_t max_count = std::numeric_limits<std::size_t>::max()/sizeof(T);
+        if (capacity > max_count/2){
+            throw std::length_error("No more space in MyVector.");
+        }
         if (size == capacity){
+            T temp(value);
             reserve(capacity == 0? 1: capacity * 2);
+            std::construct_at(data + size, std::move_if_noexcept(temp));
 
         }
-        std::construct_at(data + size, value);
+        else{
+            std::construct_at(data + size, value);
+        }
         ++size;
     }
 
     void reserve(std::size_t newCap){
         if (newCap <= capacity) return;
-        
-        if (newCap == capacity) return;
 
+        
+        if (newCap > std::numeric_limits<std::size_t>::max()/sizeof(T)){
+            throw std::length_error("Not enough space in MyVector.");
+        }
+        
         T* temp = static_cast<T*>(
             ::operator new(newCap * sizeof(T)));
 
-        for (int i{}; i < size; ++i){
-            std::construct_at(temp + i, std::move(data[i]));
+        std::size_t constructed{};
+
+        try{
+            for (; constructed < size; ++constructed){
+                std::construct_at(temp + constructed
+                    , std::move_if_noexcept(data[constructed]));
+            }
+        }catch(...){
+            while(constructed > 0){
+                std::destroy_at(temp + --constructed);
+            }
+            ::operator delete(temp);
+            throw;
         }
 
         std::swap(temp, data);
         capacity = newCap;
         
-        for (int i{}; i < size; ++i){
+        for (std::size_t i{}; i < size; ++i){
             std::destroy_at(temp + i);
         }
 
