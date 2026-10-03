@@ -43,12 +43,12 @@ public:
 
     const T* getData() const{return data;}
 
-    T* at(std::size_t index){
-        return index < size? data + index: throw std::out_of_range("Index out of bounds\n");
+    T& at(std::size_t index){
+        return index < size? data[index]: throw std::out_of_range("Index out of bounds\n");
     }
 
-    const T* at(std::size_t index) const{
-        return index < size? data + index
+    const T& at(std::size_t index) const{
+        return index < size? data[index]
                         : throw std::out_of_range("Index out of bounds");
     }
 
@@ -281,7 +281,7 @@ public:
         capacity = newCap;
         
         for (std::size_t i{}; i < size; ++i){
-            std::destroy_at(temp + i);
+            std::destroy_at//ass(temp + i);
         }
 
         ::operator delete(temp);
