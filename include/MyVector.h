@@ -240,6 +240,7 @@ public:
             throw std::length_error("No more space in MyVector.");
         }
         if (size == capacity){
+            if (size == max_count) throw std::length_error("MyVector is full at the numeric limit size_t.");
             T temp(value);
             reserve(capacity == 0? 1: capacity * 2);
             std::construct_at(data + size, std::move_if_noexcept(temp));
