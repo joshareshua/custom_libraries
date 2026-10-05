@@ -235,13 +235,12 @@ public:
     const T& operator[](std::size_t index) const { return data[index]; }
 
     void push_back(const T& value){ 
-        const std::size_t max_count = std::numeric_limits<std::size_t>::max()/sizeof(T);
-        if (capacity > max_count/2){
-            throw std::length_error("No more space in MyVector.");
-        }
+        const std::size_t max_count = std::numeric_limits<std::size_t>::max()/sizeof(T); 
         if (size == capacity){
             if (size == max_count) throw std::length_error("MyVector is full at the numeric limit size_t.");
             T temp(value);
+            const std::size_t new_capacity = capacity == 0? 1 : 
+            capacity > max_count/2? max_count: capacity * 2;
             reserve(capacity == 0? 1: capacity * 2);
             std::construct_at(data + size, std::move_if_noexcept(temp));
 
