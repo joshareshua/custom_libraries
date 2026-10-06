@@ -239,9 +239,9 @@ public:
         if (size == capacity){
             if (size == max_count) throw std::length_error("MyVector is full at the numeric limit size_t.");
             T temp(value);
-            const std::size_t new_capacity = capacity == 0? 1 : 
+            const std::size_t newCapacity = capacity == 0? 1 : 
             capacity > max_count/2? max_count: capacity * 2;
-            reserve(capacity == 0? 1: capacity * 2);
+            reserve(newCapacity);
             std::construct_at(data + size, std::move_if_noexcept(temp));
 
         }
@@ -281,7 +281,7 @@ public:
         capacity = newCap;
         
         for (std::size_t i{}; i < size; ++i){
-            std::destroy_at//ass(temp + i);
+            std::destroy_at(temp + i);
         }
 
         ::operator delete(temp);
