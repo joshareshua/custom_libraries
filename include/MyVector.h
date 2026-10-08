@@ -43,12 +43,12 @@ public:
 
     const T* getData() const{return data;}
 
-    T* at(std::size_t index){
-        return index < size? data + index: throw std::out_of_range("Index out of bounds\n");
+    T& at(std::size_t index){
+        return index < size? data[index]: throw std::out_of_range("Index out of bounds\n");
     }
 
-    const T* at(std::size_t index) const{
-        return index < size? data + index
+    const T& at(std::size_t index) const{
+        return index < size? data[index]
                         : throw std::out_of_range("Index out of bounds");
     }
 
@@ -235,13 +235,13 @@ public:
     const T& operator[](std::size_t index) const { return data[index]; }
 
     void push_back(const T& value){ 
-        const std::size_t max_count = std::numeric_limits<std::size_t>::max()/sizeof(T);
-        if (capacity > max_count/2){
-            throw std::length_error("No more space in MyVector.");
-        }
+        const std::size_t max_count = std::numeric_limits<std::size_t>::max()/sizeof(T); 
         if (size == capacity){
+            if (size == max_count) throw std::length_error("MyVector is full at the numeric limit size_t.");
             T temp(value);
-            reserve(capacity == 0? 1: capacity * 2);
+            const std::size_t newCapacity = capacity == 0? 1 : 
+            capacity > max_count/2? max_count: capacity * 2;
+            reserve(newCapacity);
             std::construct_at(data + size, std::move_if_noexcept(temp));
 
         }
@@ -276,16 +276,16 @@ public:
             ::operator delete(temp);
             throw;
         }
-
-        std::swap(temp, data);
-        capacity = newCap;
         
         for (std::size_t i{}; i < size; ++i){
-            std::destroy_at(temp + i);
+            std::destroy_at(data+ i);
         }
 
-        ::operator delete(temp);
-        
+        ::operator delete(data);
+
+        data = temp;
+        capacity = newCap;
+         
     }
 
     void pop_back(){
