@@ -276,16 +276,16 @@ public:
             ::operator delete(temp);
             throw;
         }
-
-        std::swap(temp, data);
-        capacity = newCap;
         
         for (std::size_t i{}; i < size; ++i){
-            std::destroy_at(temp + i);
+            std::destroy_at(data+ i);
         }
 
-        ::operator delete(temp);
-        
+        ::operator delete(data);
+
+        data = temp;
+        capacity = newCap;
+         
     }
 
     void pop_back(){
