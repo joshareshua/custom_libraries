@@ -177,11 +177,13 @@ public:
     MyVector& operator=(MyVector&& other) noexcept{
         if (&other == this) return *this;
         
-        //destroy old objects and deallocate old memory
-        for (std::size_t i{}; i < size; ++i){
-            std::destroy_at(data + i);
+        if (data != nullptr){
+            //destroy old objects and deallocate old memory
+            for (std::size_t i{}; i < size; ++i){
+                std::destroy_at(data + i);
+            }
+            ::operator delete(data);
         }
-        ::operator delete(data);
 
         //switch ownership/resources 
         // and leave object switched from in valid state
