@@ -305,6 +305,20 @@ public:
         size = 0;
     }
 
+    void reset(){
+        if (data != nullptr){
+            for (int i{}; i < size; ++i){
+                destroy_at(data + i);
+            }
+        }
+
+        ::operator delete(data);
+
+        size = 0;
+        capacity = 0;
+        data = nullptr;
+    }
+
     T& front(){
         if (size == 0){
             throw std::out_of_range("MyVector::front called on empty vector.\n");
