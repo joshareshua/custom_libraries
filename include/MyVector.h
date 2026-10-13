@@ -253,6 +253,25 @@ public:
         ++size;
     }
 
+    template <typename...Args>
+    void emplace_back(Args&&...args){
+        const std:: size_t max_count = std::numeric_limits<size_t>::max()/sizeof(T);
+        if (size == capacity){
+            if (size == max_count) throw std::length_error("MyVector cannot reallocate more space.'\n");
+            const std::size_t newCapacity = capacity == 0? 1 : 
+                capacity > max_count/2? max_count : capacity * 2;
+            
+            T temp(std::forward<Args>(args)...);
+            reserve(newCapacity);
+            std::construct_at(data + size, std::move_if_noexcept(temp));
+        }
+        else {
+            std::construct_at(data + size, std::forward<Args>(args)...);
+        }
+
+        ++size;
+    }
+
     void reserve(std::size_t newCap){
         if (newCap <= capacity) return;
 
@@ -307,8 +326,8 @@ public:
 
     void reset(){
         if (data != nullptr){
-            for (int i{}; i < size; ++i){
-                destroy_at(data + i);
+            for (size_t i{}; i < size; ++i){
+                std::destroy_at(data + i);
             }
         }
 
