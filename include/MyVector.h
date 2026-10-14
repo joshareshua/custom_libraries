@@ -257,7 +257,7 @@ public:
     void emplace_back(Args&&...args){
         const std:: size_t max_count = std::numeric_limits<size_t>::max()/sizeof(T);
         if (size == capacity){
-            if (size == max_count) throw std::length_error("MyVector cannot reallocate more space.'\n");
+            if (size == max_count) throw std::length_error("MyVector cannot reallocate more space.\n");
             const std::size_t newCapacity = capacity == 0? 1 : 
                 capacity > max_count/2? max_count : capacity * 2;
             
